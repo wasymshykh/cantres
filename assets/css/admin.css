@@ -1,0 +1,981 @@
+/* 
+    RESERVATION SYSTEM
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Oswald', serif;
+    font-size: 14px;
+    color: #1E1E1E;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#admin {
+    display: flex;
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+.admin-l {
+    flex: 1;
+    background: #efefef;
+    border-right: 1px solid #707070;
+    display: flex;
+}
+
+.admin-l ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px;
+}
+
+.admin-l ul li {
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid #1E1E1E;
+}
+
+.admin-l ul li:first-child {
+    border-top: 1px solid #1E1E1E;
+}
+
+.admin-l ul li a {
+    display: block;
+    text-align: center;
+    padding: 25px 15px;
+
+    text-transform: uppercase;
+    color: #000000;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+}
+
+.admin-l ul li a.isActive {
+    background: #ffffff;
+}
+
+
+.admin-r {
+    flex: 3;
+    display: flex;
+    margin: 0 25px;
+    position: relative;
+    flex-direction: column;
+}
+
+.admin-topbar {
+    padding: 10px 0 15px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.admin-title {
+    flex: 1;
+}
+
+.admin-topbar .admin-title h1 {
+    font-size: 38px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #000000;
+    padding: 0;
+    margin: 0;
+}
+
+.reserve-t-link {
+    flex: 1;
+}
+
+.reserve-t-link a {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #000000;
+    border: 1px solid #707070;
+    padding: 2px 20px;
+}
+
+.reserve-t-date {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.reserve-t-date h3 {
+    flex: 1;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+.reserve-t-date .book-field {
+    flex: 1;
+}
+
+.book-field {
+    position: relative;
+}
+.book-field textarea,
+.book-field input,
+.book-field select {
+    background: #ffffff;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 4px 10px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.125;
+    color: #1E1E1E;
+    border: 1px solid #707070;
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 auto 0 auto;
+}
+.book-a-form-submit input,
+.book-field-submit input {
+    background: #000000;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 4px 10px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.125;
+    color: #ffffff;
+    border: 1px solid #707070;
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 auto 0 auto;
+    cursor: pointer;
+}
+.book-field select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    padding-right: 1.7em;
+    overflow: auto;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.book-field.dateField::before{
+    content: "";
+    width: 18px;
+    height: 18px;
+    background: url(../img/calendar-icon.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    pointer-events: none;
+}
+.book-field.selectField::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background: url(../img/select-icon.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    pointer-events: none;
+}
+
+.admin-content {
+    margin: 15px 0;
+    padding: 0;
+    width: 100%;
+    flex: 1;
+}
+
+.resv-checker {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.resv-checker-box {
+    width: 400px;
+    display: flex;
+    align-items: center;
+}
+
+.resv-checker-box h3 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.125;
+    letter-spacing: 2px;
+    color: #676464;
+    padding: 0;
+    margin: 0;
+}
+
+.resv-checker-box .book-field {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.resv-table {
+    width: 100%;
+    display: flex;
+    margin: 25px 0 30px 0;
+}
+
+.resv-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.resv-table table th,
+.resv-table table td {
+    font-size: 12px;
+    padding: 10px 5px;
+}
+
+.resv-table table th {
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+.resv-table table td {
+    border: 1px solid #707070;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.resv-table table tr:hover td{
+    background-color: #efefef;
+}
+.resv-table table tr td:hover{
+    background-color: #e0e0e0;
+}
+
+
+/* 
+
+    RESV STEPS
+
+*/
+
+.resv-step {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.resv-step-cross {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 15px;
+    right: 0;
+}
+
+.r-step-c-l,
+.r-step-c-r {
+    width: 100%;
+    height: 1px;
+    background-color: #000000;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 25px;
+    left: 0;
+}
+
+.r-step-c-l {
+    transform: rotate(45deg);
+}
+.r-step-c-r {
+    transform: rotate(-45deg);
+}
+
+
+.resv-step-form {
+    display: flex;
+    flex-direction: column;
+    margin: 40px 0;
+}
+
+.book-a-form-fields {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.book-a-form-fields .book-field {
+    margin: 15px 0;
+}
+.book-a-form-fields .book-field:nth-child(2n+1) {
+    margin-right: 15%;
+}
+
+.resv-step-form .book-field input,
+.resv-step-form .book-field select {
+    height: 50px;
+}
+
+.resv-step-form .book-field.dateField::before{
+    width: 28px;
+    height: 28px;
+    top: 10px;
+    right: 10px;
+}
+.resv-step-form .book-field.selectField::before {
+    width: 24px;
+    height: 24px;
+    top: 14px;
+    right: 10px;
+}
+
+.book-a-form-submit {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.book-a-form-submit input {
+    max-width: 260px;
+    padding: 0.6em 1em;
+}
+
+/* 
+    Reserve - Step 2
+*/
+
+.resv-step-2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.resv-step-top {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.resv-step-top h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.resv-step-top p {
+    font-family: 'Yrsa', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+}
+
+.resv-step-price {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.resv-s-p-row {
+    width: 100%;
+    border-top: 1px solid #707070;
+    border-left: 1px solid #707070;
+    border-right: 1px solid #707070;
+    display: block;
+    position: relative;
+}
+
+.resv-s-p-row:last-child {
+    border-bottom: 1px solid #707070;
+}
+
+.resv-s-p-row input {
+    position: absolute;
+    z-index: 0;
+}
+
+.resv-s-p-row label {
+    display: flex;
+    width: 100%;
+    background: #ffffff;
+    z-index: 1;
+    position: relative;
+    cursor: pointer;
+}
+
+.resv-s-p-row label .resv-s-p-box {
+    display: flex;
+    width: 100%;
+}
+
+.resv-s-p-box .resv-s-p-box-name {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.resv-s-p-box .resv-s-p-box-price {
+    flex: 1;
+    border-left: 1px solid #707070;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.resv-s-p-row input:checked ~ label {
+    background: #000000;
+}
+.resv-s-p-row input:checked ~ label .resv-s-p-box .resv-s-p-box-price,
+.resv-s-p-row input:checked ~ label .resv-s-p-box .resv-s-p-box-name {
+    color: #ffffff;
+}
+
+.resv-s-p-btn,
+.resv-s-p-c-btn {
+    width: 100%;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.resv-s-p-btn a {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #000000;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.resv-s-p-c-btn a {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #ffffff;
+    background-color: #000000;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.6em 3em;
+}
+
+.resv-step-c-form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0 0 0;
+}
+
+.resv-step-c-top {
+    width: 100%;
+}
+
+.resv-step-c-top h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.resv-step-c-top h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-align: center;
+}
+
+.resv-step-c-top p {
+    font-family: 'Yrsa', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.resv-step-c-top p span {
+    margin-right: 10px;
+}
+
+
+.m-d-fields {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.m-d-fields .book-field{
+    margin: 15px 0;
+}
+
+.m-d-fields .book-field:nth-child(odd){
+    margin-right: 10%;
+}
+
+.m-d-fields .book-field input {
+    padding: 8px 15px;
+    font-size: 12px;
+    color: #000000;
+    letter-spacing: 1px;
+}
+
+/* 
+    APARTMENTS
+*/
+
+.apartment-boxes {
+    width: 90%;
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: 0 auto;
+}
+
+.apartment-box {
+    border-top: 1px solid #676464;
+    border-left: 1px solid #676464;
+    border-right: 1px solid #676464;
+}
+
+.apartment-box:last-child {
+    border-bottom: 1px solid #676464;
+}
+.apartment-box:nth-last-child(2) {
+    border-bottom: 1px solid #676464;
+}
+
+.apartment-box a {
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    color: #000000;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 15px 0;
+}
+
+/* 
+
+    Apartment List
+
+*/
+
+.apt-top-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.apt-t-f-boxes {
+    display: flex;
+}
+
+.apt-t-f-box {
+    display: flex;
+    margin: 10px 0;
+    flex: 1;
+}
+
+.apt-t-f-box:first-child {
+    margin-right: 50px;
+}
+
+.apt-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.apt-t-f-box .apt-field:nth-child(2){
+    margin-left: 20px;
+}
+
+.apt-field label {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.apt-field input {
+    display: block;
+    width: 100%;
+    font-family: inherit;
+    border: 1px solid #707070;
+    padding: 5px 15px;
+    text-transform: uppercase;
+}
+
+
+.apt-gallary {
+    width: 100%;
+    margin: 25px 0;
+}
+
+.apt-simple-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.apt-gallary-row {
+    display: flex;
+}
+
+.apt-gallary-img {
+    display: flex;
+}
+
+.apt-gallary-img img {
+    width: auto;
+    height: 80px;
+    display: flex;
+    border: 1px solid #707070;
+    margin: 0 15px 15px 15px;
+}
+
+.apt-gallary-img img:first-child {
+    margin-left: 0;
+}
+
+.apt-gallary-btn {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.apt-gallary-btn label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid #707070;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+.apt-gallary-btn input {
+    position: relative;
+    visibility: hidden;
+}
+
+
+.apt-prices {
+    width: 100%;
+    margin: 25px 0;
+}
+
+.apt-prices-boxes {
+    display: flex;
+    margin-top: 15px;
+}
+
+.apt-prices-boxes .apt-field {
+    flex: 1;
+    margin-right: 25px;
+}
+
+.apt-prices-boxes .apt-field:last-child {
+    margin-right: 0;
+}
+
+
+.apt-session {
+    display: flex;
+    margin-top: 30px;
+}
+
+.apt-session-l {
+    flex: 1;
+}
+
+
+.apt-session-date-select {
+    display: none;
+    margin-top: 15px;
+}
+.apt-session-date-select.isActive {
+    display: flex;
+}
+
+.apt-session-date-select .book-field:not(:last-child) {
+    margin-right: 25px;
+}
+
+.apt-session-date-select .book-field label {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.apt-session-setter {
+    display: flex;
+    flex-direction: column;
+}
+
+.apt-session-r {
+    flex: 1;
+    margin-left: 30px;
+}
+
+.apt-session-date {
+    width: 100%;
+}
+
+
+.apt-session-date h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000000;
+}
+
+.apt-select-session {
+    display: flex;
+    justify-content: space-around;
+}
+
+.apt-session-btn {
+    margin: 10px 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #707070;
+    text-align: center;
+    line-height: 50px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.apt-session-btn.isActive {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* 
+
+    CALENDAR
+
+*/
+
+.month-title {
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.month-title h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+.month-select {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.month-select a {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #000000;
+    padding: 0.2em 3em;
+    border: 1px solid #707070;
+}
+
+.month-table {
+    width: 100%;
+    display: flex;
+    margin: 30px 0 15px 0;
+}
+
+.month-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.month-table table td {
+    border: 1px solid #707070;
+    color: #000000;
+    padding: 2px 2px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-align: center;
+}
+.month-table table th {
+    border: 1px solid #707070;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.month-table table tr:first-child td:first-child {
+    border-top: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.month-table table tr:nth-child(2) td:first-child {
+    border-top: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+}
+
+.month-table table tr td.isGreen {
+    background: rgba(89, 216, 131, 0.6);
+    color: rgb(15, 65, 30)
+}
+.month-table table tr td.isRed {
+    background: rgba(255, 46, 46, 0.8);
+}
+.month-table table tr td.isRed a{
+    display: block;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.month-table table tr:hover {
+    background-color: rgba(0, 0, 0, 0.2)
+}
+
+
+.bookingDetails {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.bookDetails-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.bookDetails-title {
+    flex: 1;
+}
+
+.bookDetails-title h3 {
+    font-size: 18px;
+    color: #000000;
+    letter-spacing: 2px;
+    margin: 0;
+    padding: 0;
+}
+
+.bookDetails-link a {
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    padding: 0.2em 2em;
+    border: 1px solid #707070;
+}
+
+.bookDetails-data {
+    display: block;
+    width: 100%;
+}
+
+.bookDetails-data p {
+    font-size: 14px;
+    font-weight: 700;
+    color: #707070;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 0;
+}
+
+.bookDetails-data p span {
+    margin-right: 10px;
+}
+
+/* 
+
+    CLIENT ADD
+
+*/
+
+.clientAdd-form {
+    display: flex;
+}
+
+.clientAdd-f-l {
+    flex: 1;
+    margin: 0 5%;
+}
+
+.clientAdd-f-l .book-field,
+.clientAdd-f-r .book-field {
+    margin: 25px 0;
+}
+
+.clientAdd-f-r {
+    flex: 1;
+    margin: 0 5%;
+}
+
+.clientAdd-f-l .book-field input,
+.clientAdd-f-r .book-field input {
+    padding: 10px 15px;
+}
+
+.clientAdd-f-r .book-field.textareaField textarea {
+    padding: 10px 15px;
+    height: 100px;
+}
