@@ -24,6 +24,57 @@ ul {
     margin: 0;
 }
 
+/* 
+    ALERT
+*/
+
+.apt-alert {
+    padding: 5px;
+    width: 100%;
+    display: block;
+}
+
+.apt-alert.apt-success {
+    background-color: #000000;
+}
+.apt-alert.apt-errors {
+    background-color: #8d0000;
+}
+.apt-alert p {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.apt-alert ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.apt-alert ul li {
+    display: block;
+    color: #ffffff;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    position: relative;
+    padding-left: 10px;
+}
+
+.apt-alert ul li::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 3px;
+    height: 3px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+}
+
 #admin {
     display: flex;
     background: #ffffff;
@@ -664,12 +715,50 @@ ul {
     display: flex;
 }
 
+
+.apt-edit-page a {
+    display: flex;
+    position: relative;
+    margin: 0 15px 15px 15px;
+}
+.apt-edit-page a:first-child {
+    margin-left: 0;
+}
+.apt-edit-page a:hover::before {
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.2);
+}
+.apt-edit-page a:hover::after {
+    content: "REMOVE";
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    height: 15px;
+    position: absolute;
+    background: #000000;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
 .apt-gallary-img img {
     width: auto;
     height: 80px;
     display: flex;
     border: 1px solid #707070;
     margin: 0 15px 15px 15px;
+}
+
+.apt-edit-page img {
+    margin: 0 0 0 0;
 }
 
 .apt-gallary-img img:first-child {

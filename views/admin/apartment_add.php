@@ -1,6 +1,22 @@
 <div class="month-title">
-    <h2>Add Apartment</h2>
+    <h2>Enter Data</h2>
 </div>
+
+<?php if(isset($success)): ?>
+    <div class="apt-alert apt-success">
+        <p><?=$success?></p>
+    </div>
+<?php endif; ?>
+
+<?php if(!empty($errors)): ?>
+    <div class="apt-alert apt-errors">
+        <ul>
+            <?php foreach ($errors as $error): ?>
+                <li><?=$error?>.</li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+<?php endif; ?>
 
 <form action="" id="addForm" method="POST">
 
@@ -42,7 +58,20 @@
 <div class="apt-gallary">
     <div class="apt-simple-title">Fotos</div>
     <div class="apt-gallary-row">
-        <div class="apt-gallary-img"></div>
+        <div class="apt-gallary-img">
+
+<?php 
+
+if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
+    for($i = 0; $i < count($_POST['apt_images']); $i++){
+        echo '<img src="'.URL.'/assets/uploads/'.$_POST['apt_images'][$i].'">';
+    }
+}
+
+
+?>
+        
+        </div>
         <div class="apt-gallary-btn">
             <label for="aptimages">Anadir Foto</label>
             <input type="file" id="aptimages">
@@ -157,7 +186,7 @@
 
         for($i = 0; $i < count($_POST['apt_images']); $i++){
             echo '<input type="hidden" name="apt_images[]" class="theimages"
-             src="'.URL.'/assets/uploads/'.$_POST['apt_images'][$i].'">';
+             value="'.$_POST['apt_images'][$i].'">';
         }
 
     }

@@ -41,6 +41,7 @@
                 <div class="admin-title">
                     <h1><?php echo $pageTitle; ?></h1>
                 </div>
+                <?=isset($customTop)?$customTop:''?>
             </div>
 
             <div class="admin-content">

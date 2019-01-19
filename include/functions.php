@@ -47,25 +47,45 @@ function apt_error($field, $is_what) {
         case 's_4_end':
             return 'Season four (end) is '.$is_what;
         default:
-            return 'There is error ' . $is_what;
+            return 'There is error ('.$field.') ' . $is_what;
             break;
     }
 
 }
 
 
+// Date Manipulation
+
+
+function dateDB($d)
+{
+    $date = new DateTime($d);
+    return $date->format('Y-m-d H:i:s');
+}
+
+function dateUser($d)
+{
+    $date = new DateTime($d);
+    return $date->format('m/d/Y');
+}
+
+function dateDiffer($d1, $d2)
+{
+    $dStart = new DateTime($d1);
+    $dEnd  = new DateTime($d2);
+    $dDiff = $dStart->diff($dEnd);
+    return $dDiff->days;
+}
+
 
 
 // Uploading an image from $_FILE['-----']
 
-function uploadImage($data)
-{
-
+function uploadImage($data) {
     $target_dir = "../assets/uploads/";
-
-    $file_name = time() . basename(normal($data['name']));
+    $file_name = time() . '_' . basename(normal($data['name']));
+    $file_name = preg_replace('/\s/', '', $file_name);
     $target_file = $target_dir . $file_name; 
-
     $file_size = $data['size'];
     $file_tmp = $data['tmp_name'];
 
@@ -85,6 +105,59 @@ function uploadImage($data)
             echo json_encode(array(
                 'success'=>true,
                 'message'=>$file_name
+            ));
+        } else {
+            echo json_encode(array(
+                'error'=>true,
+                'message'=>'Error while uploading the file'
+            ));
+        }
+        
+    } else {
+        echo json_encode(array(
+            'error'=>true,
+            'message'=>$errors
+        ));
+    }
+}
+
+// Uploading updated an image from $_FILE['-----']
+
+function uploadUpdateImage($data, $apt_id, $db) {
+    $target_dir = "../assets/uploads/";
+    $file_name = time() . '_' . basename(normal($data['name']));
+    $file_name = preg_replace('/\s/', '', $file_name);
+    $target_file = $target_dir . $file_name; 
+    $file_size = $data['size'];
+    $file_tmp = $data['tmp_name'];
+
+    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+    if(in_array($imageFileType,IMG_EXT) === false) {
+        $errors[]="Extension not allowed.";
+    }
+    if($file_size > IMG_MAX_SIZE) {
+        $errors[]='File size must be less than 1 MB';
+    }
+    if(empty($errors)==true){
+
+        $checker = move_uploaded_file($file_tmp, $target_file);
+
+        if($checker){
+
+            $stmt = $db->prepare('INSERT INTO `apartment_images`(`img_name`,`apt_id`,`is_active`) VALUE (:img_name, :apt_id, 1)');
+
+            $stmt->execute([
+                'img_name'=>$file_name,
+                'apt_id'=>$apt_id
+            ]);
+
+            $img_id = $db->lastInsertId();
+
+            echo json_encode(array(
+                'success'=>true,
+                'message'=>$file_name,
+                'img_id'=>$img_id
             ));
         } else {
             echo json_encode(array(
