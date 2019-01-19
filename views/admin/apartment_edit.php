@@ -182,7 +182,7 @@ if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
 </div>
 
 <div class="book-a-form-submit">
-    <input type="submit" value="ANADIR Apartamento" name="edit_apartment">
+    <input type="submit" value="Editar Apartamento" name="edit_apartment">
 </div>
 
 </form>
@@ -190,14 +190,19 @@ if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
 
 
 <script>
-    let apt_is = document.querySelectorAll('.apt-gallary-img a');
+    function updateListeners() {
+        let apt_is = document.querySelectorAll('.apt-gallary-img a');
 
-    apt_is.forEach(apt_i=>{
-        apt_i.addEventListener('click', removeImage)
-    });
+        apt_is.forEach(apt_i=>{
+            apt_i.addEventListener('click', removeImage)
+        });
+    }
+    
     function removeImage(e){
         e.target.remove();
     }
+
+    updateListeners();
 </script>
 
 
