@@ -83,6 +83,38 @@ function dateDiffer($d1, $d2)
     return $dDiff->days;
 }
 
+function calendarCheck($page)
+{
+    $current_month = date('n');
+    $current_year = date('Y');
+
+    if($page > 0){
+        for($i = 1; $i < $page; $i++){
+            if($current_month == 1){
+                $current_year--;
+                $current_month = 12;
+            } else {
+                $current_month--;
+            }
+        }
+    } else {
+        for($i = 1; $i > $page; $i--){
+            if($current_month == 12){
+                $current_year++;
+                $current_month = 1;
+            } else {
+                $current_month++;
+            }
+        }
+    }
+
+    return [
+        'month'=>$current_month,
+        'year'=>$current_year
+    ];
+
+}
+
 
 
 // Uploading an image from $_FILE['-----']
@@ -307,6 +339,14 @@ function getApartment($apt_id, $db)
     return $stmt->fetch();
 }
 
+function getApartments($db)
+{
+    $apt_query = "SELECT * FROM `apartments`";
+    $stmt = $db->prepare($apt_query);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
 
 
 function getAvailableReserve($from, $to, $db)
@@ -352,6 +392,41 @@ function isBooked($from, $to, $res_no, $db) {
            foreach ($reservedChecks as $reservedCheck) {
                if($dateCheck == $reservedCheck){
                    return true;
+               }
+           }
+       }
+    }
+    
+    return false;
+}
+
+
+
+
+// Calendar is Available
+function isCalendarReserved($from, $to, $apt_id, $db) {
+    $selectApartments = "SELECT `res_no`,`start_date`, `end_date` FROM `reserve` WHERE `apt_id`=:apt_id";
+    $stmt = $db->prepare($selectApartments);
+    $stmt->execute(['apt_id'=>$apt_id]);
+    $results = $stmt->fetchAll();
+
+    $givenDates = getRange($from, $to);
+    $dateChecks = [];
+    foreach($givenDates as $dt) {
+        $dateChecks[] = $dt->format("m/d/Y");
+    }
+
+    foreach ($results as $reserve) {
+        $reserveRanges = getRange($reserve['start_date'], $reserve['end_date']);
+        $reservedChecks = [];
+        foreach($reserveRanges as $dt) {
+            $reservedChecks[] = $dt->format("m/d/Y");
+        }
+        
+       foreach($dateChecks as $dateCheck){
+           foreach ($reservedChecks as $reservedCheck) {
+               if($dateCheck == $reservedCheck){
+                   return $reserve;
                }
            }
        }

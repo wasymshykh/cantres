@@ -29,7 +29,7 @@
     <div id="admin">
         <div class="admin-l">
             <ul>
-                <li><a href="<?php echo URL; ?>/admin/reserves.php" class="isActive">Reservas</a></li>
+                <li><a href="<?php echo URL; ?>/admin/reserves.php">Reservas</a></li>
                 <li><a href="<?php echo URL; ?>/admin/apartments.php">Apartmentos</a></li>
                 <li><a href="<?php echo URL; ?>/admin/calendar.php">Calendario</a></li>
                 <li><a href="<?php echo URL; ?>/admin/clients.php">Clientes</a></li>
