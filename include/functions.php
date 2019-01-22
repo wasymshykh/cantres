@@ -69,6 +69,12 @@ function dateUser($d)
     return $date->format('m/d/Y');
 }
 
+function dateForm($d, $f)
+{
+    $date = new DateTime($d);
+    return $date->format($f);
+}
+
 function dateDiffer($d1, $d2)
 {
     $dStart = new DateTime($d1);
@@ -172,4 +178,184 @@ function uploadUpdateImage($data, $apt_id, $db) {
             'message'=>$errors
         ));
     }
+}
+
+
+// Apartment Checker for reservation
+function getAvailable($from, $to, $adults, $children, $db)
+{
+    
+    $apt_query = "SELECT * FROM `apartments`";
+    $stmt = $db->prepare($apt_query);
+    $stmt->execute();
+    $apartments = $stmt->fetchAll();
+
+    $availableApartments = [];
+    foreach ($apartments as $apt) {
+        if(isAvailable($from, $to, $apt['id'], $db) && isEligible($adults, $apt['adults'], $children, $apt['children'])){
+            $availableApartments[] = $apt;
+        }
+    }
+
+    return $availableApartments;
+}
+
+
+// if person and childern can fill the apartment
+function isEligible($adults, $apt_adults, $children, $apt_children) {
+    if($adults <= $apt_adults && $children <= $apt_children){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// reservation table checker
+function isAvailable($from, $to, $apt_id, $db) {
+    $selectApartments = "SELECT `start_date`, `end_date` FROM `reserve` WHERE `apt_id`=:apt_id";
+    $stmt = $db->prepare($selectApartments);
+    $stmt->execute(['apt_id'=>$apt_id]);
+    $results = $stmt->fetchAll();
+
+    $givenDates = getRange($from, $to);
+    $dateChecks = [];
+    foreach($givenDates as $dt) {
+        $dateChecks[] = $dt->format("m/d/Y");
+    }
+
+    foreach ($results as $reserve) {
+        $reserveRanges = getRange($reserve['start_date'], $reserve['end_date']);
+        $reservedChecks = [];
+        foreach($reserveRanges as $dt) {
+            $reservedChecks[] = $dt->format("m/d/Y");
+        }
+        
+       foreach($dateChecks as $dateCheck){
+           foreach ($reservedChecks as $reservedCheck) {
+               if($dateCheck == $reservedCheck){
+                   return false;
+               }
+           }
+       }
+    }
+    
+    return true;
+}
+
+function getRange($from, $to) {
+    $start = new DateTime($from);
+    $end = new DateTime($to);
+    $end->modify('+1 day');
+    $interval = DateInterval::createFromDateString('1 day');
+    return new DatePeriod($start, $interval, $end);
+}
+
+function getApartmentPrice($from, $to, $apt) {
+    
+    $given_range = getRange($from, $to);
+    $season_1_range = getRange($apt['s_1_start'],$apt['s_1_end']);
+    $season_2_range = getRange($apt['s_2_start'],$apt['s_2_end']);
+    $season_3_range = getRange($apt['s_3_start'],$apt['s_3_end']);
+    $season_4_range = getRange($apt['s_4_start'],$apt['s_4_end']);
+
+    $given_range_checks = [];
+    foreach($given_range as $dt) {
+        $given_range_checks[] = $dt->format("m/d/Y");
+    }
+
+    $season_1_checks = [];
+    foreach($season_1_range as $dt) {
+        $season_1_checks[] = $dt->format("m/d/Y");
+    }
+    $season_2_checks = [];
+    foreach($season_2_range as $dt) {
+        $season_2_checks[] = $dt->format("m/d/Y");
+    }
+    $season_3_checks = [];
+    foreach($season_3_range as $dt) {
+        $season_3_checks[] = $dt->format("m/d/Y");
+    }
+    $season_4_checks = [];
+    foreach($season_4_range as $dt) {
+        $season_4_checks[] = $dt->format("m/d/Y");
+    }
+
+    $totalCost = 0;
+    foreach ($given_range_checks as $given_date) {
+        if(in_array($given_date, $season_1_checks)){
+            $totalCost += $apt['p_1'];
+        }
+        if(in_array($given_date, $season_2_checks)){
+            $totalCost += $apt['p_2'];
+        }
+        if(in_array($given_date, $season_3_checks)){
+            $totalCost += $apt['p_3'];
+        }
+        if(in_array($given_date, $season_4_checks)){
+            $totalCost += $apt['p_4'];
+        }
+    }
+
+    return $totalCost;
+}
+
+function getApartment($apt_id, $db)
+{
+    $apt_query = "SELECT * FROM `apartments` WHERE `id`=$apt_id";
+    $stmt = $db->prepare($apt_query);
+    $stmt->execute();
+    return $stmt->fetch();
+}
+
+
+
+function getAvailableReserve($from, $to, $db)
+{
+    
+    $res_query = "SELECT * FROM `reserve`";
+    $stmt = $db->prepare($res_query);
+    $stmt->execute();
+    $reservation = $stmt->fetchAll();
+
+    $availableReservation = [];
+    foreach ($reservation as $res) {
+        if(isBooked($from, $to, $res['res_no'], $db)){
+            $availableReservation[] = $res;
+        }
+    }
+
+    return $availableReservation;
+}
+
+
+function isBooked($from, $to, $res_no, $db) {
+    $selectApartments = "SELECT `start_date`, `end_date` FROM `reserve` WHERE `res_no`=:res_no";
+    $stmt = $db->prepare($selectApartments);
+    $stmt->execute(['res_no'=>$res_no]);
+    $results = $stmt->fetchAll();
+
+    $givenDates = getRange($from, $to);
+    $dateChecks = [];
+    foreach($givenDates as $dt) {
+        $dateChecks[] = $dt->format("m/d/Y");
+    }
+
+    foreach ($results as $reserve) {
+        $reserveRanges = getRange($reserve['start_date'], $reserve['end_date']);
+        $reservedChecks = [];
+        foreach($reserveRanges as $dt) {
+            $reservedChecks[] = $dt->format("m/d/Y");
+        }
+        
+        $isAvail = -1;
+       foreach($dateChecks as $dateCheck){
+           foreach ($reservedChecks as $reservedCheck) {
+               if($dateCheck == $reservedCheck){
+                   return true;
+               }
+           }
+       }
+    }
+    
+    return false;
 }
