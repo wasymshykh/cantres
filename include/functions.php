@@ -83,6 +83,22 @@ function dateDiffer($d1, $d2)
     return $dDiff->days;
 }
 
+function dateValid($d1, $d2)
+{
+    $dStart = new DateTime($d1);
+    $dEnd = new DateTime($d2);
+    $dToday = new DateTime("now");
+
+    if($dStart > $dEnd){
+        return false;
+    }
+    if($dToday > $dStart) {
+        return false;
+    }
+
+    return true;
+}
+
 function calendarCheck($page)
 {
     $current_month = date('n');
@@ -214,7 +230,7 @@ function uploadUpdateImage($data, $apt_id, $db) {
 
 
 // Apartment Checker for reservation
-function getAvailable($from, $to, $adults, $children, $db)
+function getAvailable($from, $to, $adults, $children, $db, $limit = false)
 {
     
     $apt_query = "SELECT * FROM `apartments`";
@@ -223,9 +239,13 @@ function getAvailable($from, $to, $adults, $children, $db)
     $apartments = $stmt->fetchAll();
 
     $availableApartments = [];
+    $index = 1;
     foreach ($apartments as $apt) {
         if(isAvailable($from, $to, $apt['id'], $db) && isEligible($adults, $apt['adults'], $children, $apt['children'])){
             $availableApartments[] = $apt;
+            if($limit && $index > $limit){
+                return $availableApartments;
+            }
         }
     }
 
@@ -433,4 +453,15 @@ function isCalendarReserved($from, $to, $apt_id, $db) {
     }
     
     return false;
+}
+
+
+function getApartmentImages($apt_id, $db)
+{
+    $apt_img_query =  "SELECT * FROM `apartment_images` WHERE `apt_id`=:apt_id";
+
+    $stmt = $db->prepare($apt_img_query);
+    $stmt->execute(['apt_id'=>$apt_id]);
+    
+    return $stmt->fetchAll();
 }

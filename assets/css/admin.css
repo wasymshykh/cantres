@@ -79,6 +79,7 @@ ul {
     display: flex;
     background: #ffffff;
     min-height: 100vh;
+    min-width: 1100px;
 }
 
 .admin-l {
