@@ -22,11 +22,11 @@
         <form action="" method="POST">
             <div class="book-a-form-fields">
                 <div class="book-field dateField">
-                    <input type="text" id="from" name="from" placeholder="Entrada">
+                    <input type="text" id="from" name="from" placeholder="Entrada" value="<?=isset($from)?$from:''?>">
                 </div>
 
                 <div class="book-field dateField">
-                    <input type="text" id="to" name="to" placeholder="Salida">
+                    <input type="text" id="to" name="to" placeholder="Salida" value="<?=isset($to)?$to:''?>">
                 </div>
 
                 <div class="book-field selectField">
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="book-field">
-                    <input type="text" name="email" placeholder="Email">
+                    <input type="text" name="email" placeholder="Email" value="<?=isset($email)?$email:''?>">
                 </div>
 
                 <div class="book-field selectField">
