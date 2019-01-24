@@ -178,6 +178,12 @@
 
             if(empty($errors)){
 
+               
+                    $apt_img = getApartmentImages($apt['id'], $db)[0];
+                    
+                $specialDiv = '<div class="beforeMain" style="background: url('.URL.'/assets/uploads/'.$apt_img['img_name'].') no-repeat;
+    background-size: cover;
+    background-position: center center;"></div>';
                 $specialClass = "main-grey";
                 $page_view = "done.php";
 

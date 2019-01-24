@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/previous.css">
     <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/flickity.css">
     <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/responsive.css">
 
 
     <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/jquery-ui.min.css">
@@ -33,7 +34,7 @@
 
 
         <div id="container">
-            <a href="<?php echo URL; ?>/" title="Can Tres">
+            <a href="<?php echo URL; ?>/book.php" title="Can Tres">
                 <img src="http://www.cantresformentera.com/wp-content/themes/can-tres/img/logo.svg" alt="Can Tres"
                     class="logo" scale="0">
             </a>
@@ -51,5 +52,6 @@
     </header>
 
     <section>
+        <?=isset($specialDiv)?$specialDiv:''?>
         <div id="main" <?=isset($specialClass)?'class="'.$specialClass.'"':''?>>
             <div class="main-inner">
