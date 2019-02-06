@@ -10,13 +10,13 @@
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Yrsa:300,400,500,600,700" rel="stylesheet">
 
-    <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/admin.css">
-
-
+    
+    
     <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/jquery-ui.structure.min.css">
     <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/jquery-ui.theme.css">
-
+    <link rel="stylesheet" href="<?php echo URL; ?>/assets/css/admin.css">
+    
     <script src="<?php echo URL; ?>/assets/js/jquery.js"></script>
     <script src="<?php echo URL; ?>/assets/js/jquery-ui.min.js"></script>
 

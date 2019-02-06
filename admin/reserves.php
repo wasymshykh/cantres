@@ -5,7 +5,7 @@
 
     if(empty($_POST['reserve_check'])){
         $reservation_query = "
-            SELECT * FROM `reserve` r JOIN `apartments` a ON r.apt_id = a.id
+            SELECT r.*,a.*,c.email,c.name as client_name,c.come_from FROM `reserve` r JOIN `apartments` a ON r.apt_id = a.id JOIN `client` c ON r.client_id = c.id
         ";
         $stmt = $db->prepare($reservation_query);
         $stmt->execute();

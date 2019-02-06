@@ -36,22 +36,18 @@
             <div class="book-field selectField">
                 <select name="adults">
                     <option value="" selected>Nº PERSONAS</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                    <?php for($i = 0; $i <= 8; $i++): ?>
+                        <option value="<?=$i?>" <?=(isset($adults) && $adults==$i)?'selected':''?>><?=$i?></option>
+                    <?php endfor; ?>
                 </select>
             </div>
 
             <div class="book-field selectField">
                 <select name="children">
                     <option value="" selected>Nº NIÑOS (MIN 14 AÑOS)</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
+                    <?php for($i = 0; $i <= 8; $i++): ?>
+                        <option value="<?=$i?>" <?=(isset($children) && $children==$i)?'selected':''?>><?=$i?></option>
+                    <?php endfor; ?>
                 </select>
             </div>
         </div>
@@ -89,7 +85,9 @@
         <input type="hidden" name="children" value="<?=$children?>">
 
         <div class="resv-s-p-btn">
-            <a href="#">Volver Atras</a>
+            <div class="book-a-back-submit">
+                <input type="submit" value="Volver Atras" name="step_0">
+            </div>
 
             <div class="book-a-form-submit">
                 <input type="submit" value="Reservar" name="step_2">
@@ -131,19 +129,63 @@
                     <input type="email" name="email" placeholder="Email" value="<?=isset($_POST['email'])?$_POST['email']:''?>">
                 </div>
 
-                <div class="book-field">
+                <!-- <div class="book-field">
                     <input type="text" name="come_from" placeholder="COMO NOS CONOCIO" value="<?=isset($_POST['come_from'])?$_POST['come_from']:''?>">
+                </div> -->
+                <div class="book-field">
+                    <select name="come_from">
+                        <option value="">COMO NOS CONOCIO</option>
+                        <?php $comos = cameFromList($db); 
+                            foreach ($comos as $como): ?>
+                            <option value="<?=$como?>"><?=$como?></option>
+                        <?php endforeach ?>
+                    </select>
                 </div>
 
-                <div class="book-field">
+                <!-- <div class="book-field">
                     <input type="text" name="payment_via" placeholder="FORMA DE PAGO" value="<?=isset($_POST['payment_via'])?$_POST['payment_via']:''?>">
+                </div> -->
+                <div class="book-field">
+                    <select name="payment_via" id="payvia">
+                        <option value="">FORMA DE PAGO</option>
+                        <option value="Paypal">Paypal</option>
+                        <option value="Credit Card">Pago con tarjeta</option>
+                    </select>
                 </div>
 
                 <div class="book-field">
                     <input type="text" name="note" placeholder="Notas" value="<?=isset($_POST['note'])?$_POST['note']:''?>">
                 </div>
             </div>
-
+            <div class="payment-cc hidden">
+                <div class="c-2-fields">
+                    <div class="search-field">
+                        <div class="book-field">
+                            <input type="text" name="c_name" id="cname" value="" placeholder="NOMBRE DE LA TARJETA">
+                        </div>
+                    </div>
+                    <div class="search-field">
+                        <div class="book-field">
+                            <input type="text" name="c_number" id="cnumber" maxlength="19" value="" placeholder="NUMERO DE TARJETA">
+                        </div>
+                    </div>
+                </div>
+                <div class="c-3-fields">
+                    <div class="search-field">
+                        <div class="book-field">
+                            <input type="text" name="c_mm" id="cmm" placeholder="MM" maxlength="2" value="">
+                        </div>
+                        <div class="book-field">
+                            <input type="text" name="c_aa" id="caa" placeholder="AA" maxlength="2" value="">
+                        </div>
+                    </div>
+                    <div class="search-field">
+                        <div class="book-field">
+                            <input type="text" name="c_cvv" id="cvv" maxlength="3" value="" placeholder="CVV">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <input type="hidden" name="from" value="<?=$from?>">
@@ -155,7 +197,9 @@
         <input type="hidden" name="apt_name" value="<?=$apt['name']?>">
 
         <div class="resv-s-p-btn">
-            <a href="#">Volver Atras</a>
+            <div class="book-a-back-submit">
+                <input type="submit" value="Volver Atras" name="step_1">
+            </div>
 
             <div class="book-a-form-submit">
                 <input type="submit" value="Reservar" name="step_3">
@@ -193,6 +237,19 @@
 
     
 <script>
+
+    if(document.querySelector("#payvia") != null){
+
+        document.querySelector("#payvia").addEventListener('change',(e)=>{
+            if(e.target.value === 'Credit Card') {
+                document.querySelector('.payment-cc').style.display = 'flex';
+            } else {
+                document.querySelector('.payment-cc').style.display = 'none';
+            }
+        })
+    }
+
+
 $(function () {
     var dateFormat = "mm/dd/yy",
         from_1 = $("#from").datepicker({
