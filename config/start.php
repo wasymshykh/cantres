@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'cantres');
 define('DB_USER', 'root');
-define('DB_PASSWORD', 'administrator');
+define('DB_PASSWORD', 'root');
 
 try {
     $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD);
@@ -24,7 +24,7 @@ define('IMG_MAX_SIZE', 1000000);
 
 // Other constants
 
-define('URL', 'http://localhost/CanTres');
+define('URL', 'http://localhost/cantres');
 
 
 ?>

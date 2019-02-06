@@ -33,6 +33,7 @@
                 <li><a href="<?php echo URL; ?>/admin/apartments.php">Apartmentos</a></li>
                 <li><a href="<?php echo URL; ?>/admin/calendar.php">Calendario</a></li>
                 <li><a href="<?php echo URL; ?>/admin/clients.php">Clientes</a></li>
+                <li><a href="<?php echo URL; ?>/admin/site_config.php">Config</a></li>
             </ul>
         </div>
         <div class="admin-r">

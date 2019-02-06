@@ -31,24 +31,19 @@
 
                 <div class="book-field selectField">
                     <select name="adults">
-                        <option value="" selected>Nº PERSONAS</option>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                        <option value="">Nº PERSONAS</option>
+                        <?php for($i = 0; $i <= 8; $i++): ?>
+                        <option value="<?=$i?>" <?=(isset($adults) && $adults==$i)?'selected':''?>><?=$i?></option>
+                        <?php endfor; ?>
                     </select>
                 </div>
 
                 <div class="book-field selectField">
                     <select name="children">
-                        <option value="" selected>Nº NIÑOS (MIN 14 AÑOS)</option>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
+                        <option value="">Nº NIÑOS (MIN 14 AÑOS)</option>
+                        <?php for($i = 0; $i <= 8; $i++): ?>
+                            <option value="<?=$i?>" <?=(isset($children) && $children==$i)?'selected':''?>><?=$i?></option>
+                        <?php endfor; ?>
                     </select>
                 </div>
 
@@ -59,8 +54,10 @@
                 <div class="book-field selectField">
                     <select name="come_from">
                         <option value="" selected>COMO NOS CONOCIO</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="Instagram">Instagram</option>
+                        <?php $comos = cameFromList($db); 
+                        foreach ($comos as $como): ?>
+                        <option value="<?=$como?>"><?=$como?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
 

@@ -9,6 +9,23 @@ function normal($data) {
     return '';
 }
 
+function getSetting($name, $db){
+    $stmt = $db->prepare("SELECT `value` FROM `config` WHERE `name`=:name");
+    $stmt->execute(['name'=>$name]);
+    return $stmt->fetch()['value'];
+}
+
+function saveSetting($name, $value, $db) {
+    $stmt = $db->prepare("UPDATE `config` SET `value`=:value WHERE `name`=:name");
+    return $stmt->execute(['value'=>$value, 'name'=>$name]);
+}
+
+function cameFromList($db) {
+    $camefroms = getSetting('came_froms',$db);
+    $camefroms = explode(',',$camefroms);
+    return array_map("normal",$camefroms);
+}
+
 function apt_error($field, $is_what) {
     
     switch ($field) {

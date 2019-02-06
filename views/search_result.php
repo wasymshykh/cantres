@@ -20,12 +20,9 @@
                 <label for="adults">Adults</label>
                 <div class="book-field selectField">
                     <select id="adults" name="adults">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                        <?php for($i = 0; $i <= 8; $i++): ?>
+                            <option value="<?=$i?>"><?=$i?></option>
+                        <?php endfor; ?>
                     </select>
                 </div>
             </div>
@@ -34,11 +31,9 @@
                 <label for="ninos">NIÑOS (+14)</label>
                 <div class="book-field selectField">
                     <select id="ninos" name="children">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
+                        <?php for($i = 0; $i <= 8; $i++): ?>
+                            <option value="<?=$i?>"><?=$i?></option>
+                        <?php endfor; ?>
                     </select>
                 </div>
             </div>

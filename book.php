@@ -1,6 +1,9 @@
 <?php 
     require('./config/start.php');
     require('./include/functions.php');
+    session_start();
+   
+
     $errors = [];
     $payerrors = [];
 
@@ -13,6 +16,7 @@
         if(isset($_POST['email']) && isset($_POST['come_from'])) {
             $email = normal($_POST['email']);
             $come_from = normal($_POST['come_from']);
+            $_SESSION['came_from'] = $come_from;
         }
         if(empty($from)){
             $errors[] = "From field is empty!";
@@ -23,7 +27,7 @@
         if(empty($adults)){
             $errors[] = "Personas field is empty!";
         }
-        if(empty($children)){
+        if(empty($children) && $children != '0'){
             $errors[] = "Ninos field is empty!";
         }
         if(isset($_POST['email']) && empty($email)){
@@ -136,7 +140,11 @@
 
         if(empty($errors) && empty($payerrors)) {
 
-            if(!isset($come_from)){
+            if(!isset($come_from) && isset($_SESSION['came_from']) && !empty($_SESSION['came_from'])){
+                $come_from = $_SESSION['came_from'];
+            }
+
+            if(!isset($come_from) || empty($come_from)){
                 $come_from = "Other";
             }
             $reserve_date = date('Y-m-d H:i:s');
