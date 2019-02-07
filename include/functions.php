@@ -260,9 +260,10 @@ function getAvailable($from, $to, $adults, $children, $db, $limit = false)
     foreach ($apartments as $apt) {
         if(isAvailable($from, $to, $apt['id'], $db) && isEligible($adults, $apt['adults'], $children, $apt['children'])){
             $availableApartments[] = $apt;
-            if($limit && $index > $limit){
+            if($limit && $index >= $limit){
                 return $availableApartments;
             }
+            $index++;
         }
     }
 
