@@ -11,8 +11,10 @@
     if(isset($_POST['add_apartment']) && !empty(normal($_POST['add_apartment']))){
 
         foreach ($_POST as $p_name => $p_value) {
-            if(empty(normal($p_value)) && gettype($p_value) !== 'array'){
-                $errors[] = apt_error($p_name, 'Empty');
+            if(!in_array($p_name, ['p_1_a', 'p_2_a', 'p_3_a', 'p_4_a'])){
+                if(empty(normal($p_value)) && gettype($p_value) !== 'array'){
+                    $errors[] = apt_error($p_name, 'Empty');
+                }
             }
         }
 
@@ -32,68 +34,91 @@
             $price_3 = normal($_POST['p_3']);
             $price_4 = normal($_POST['p_4']);
 
-            $s_1_start = dateDB(normal($_POST['s_1_start']));
-            $s_1_end = dateDB(normal($_POST['s_1_end']));
-            $s_2_start = dateDB(normal($_POST['s_2_start']));
-            $s_2_end = dateDB(normal($_POST['s_2_end']));
-            $s_3_start = dateDB(normal($_POST['s_3_start']));
-            $s_3_end = dateDB(normal($_POST['s_3_end']));
-            $s_4_start = dateDB(normal($_POST['s_4_start']));
-            $s_4_end = dateDB(normal($_POST['s_4_end']));
+            $price_1_a = normal($_POST['p_1_a']);
+            $price_2_a = normal($_POST['p_2_a']);
+            $price_3_a = normal($_POST['p_3_a']);
+            $price_4_a = normal($_POST['p_4_a']);
 
-            $totalDay = dateDiffer($s_1_start, $s_1_end)+dateDiffer($s_2_start, $s_2_end)+dateDiffer($s_3_start, $s_3_end)+dateDiffer($s_4_start, $s_4_end);
+            $s_1_date = normal($_POST['s_1_date']);
+            $s_2_date = normal($_POST['s_2_date']);
+            $s_3_date = normal($_POST['s_3_date']);
+            $s_4_date = normal($_POST['s_4_date']);
+
+            $s_sub = explode(" to ", $s_1_date);
+            $s_1_start = dateDB(normal($s_sub[0]));
+            $s_1_end = dateDB(normal($s_sub[1]));
+
+            $s_sub = explode(" to ", $s_2_date);
+            $s_2_start = dateDB(normal($s_sub[0]));
+            $s_2_end = dateDB(normal($s_sub[1]));
+
+            $s_sub = explode(" to ", $s_3_date);
+            $s_3_start = dateDB(normal($s_sub[0]));
+            $s_3_end = dateDB(normal($s_sub[1]));
+
+            $s_sub = explode(" to ", $s_4_date);
+            $s_4_start = dateDB(normal($s_sub[0]));
+            $s_4_end = dateDB(normal($s_sub[1]));
+
+
+            // $s_1_start = dateDB(normal($_POST['s_1_start']));
+            // $s_1_end = dateDB(normal($_POST['s_1_end']));
+            // $s_2_start = dateDB(normal($_POST['s_2_start']));
+            // $s_2_end = dateDB(normal($_POST['s_2_end']));
+            // $s_3_start = dateDB(normal($_POST['s_3_start']));
+            // $s_3_end = dateDB(normal($_POST['s_3_end']));
+            // $s_4_start = dateDB(normal($_POST['s_4_start']));
+            // $s_4_end = dateDB(normal($_POST['s_4_end']));
+
+            //$totalDay = dateDiffer($s_1_start, $s_1_end)+dateDiffer($s_2_start, $s_2_end)+dateDiffer($s_3_start, $s_3_end)+dateDiffer($s_4_start, $s_4_end);
             
-            if($totalDay === 361) {
 
+            $apt_imgs = $_POST['apt_images'];
 
-                $apt_imgs = $_POST['apt_images'];
+            $apt_query = "
+                INSERT INTO `apartments` (`name`, `desc_1`, `desc_2`, `adults`, 
+                `children`, `p_1`, `p_2`, `p_3`, `p_4`, `p_1_a`, `p_2_a`, `p_3_a`, `p_4_a`,
+                `s_1_start`, `s_1_end`, `s_2_start`, `s_2_end`, 
+                `s_3_start`, `s_3_end`, `s_4_start`, `s_4_end`)
+                VALUES ('$name', '$desc_1', '$desc_2', '$adults',
+                '$children', '$price_1', '$price_2', '$price_3', '$price_4', '$price_1_a', '$price_2_a', '$price_3_a', '$price_4_a',
+                DATE('$s_1_start'), DATE('$s_1_end'), DATE('$s_2_start'), DATE('$s_2_end'),
+                DATE('$s_3_start'), DATE('$s_3_end'), DATE('$s_4_start'), DATE('$s_4_end'))
+            ";
 
-                $apt_query = "
-                    INSERT INTO `apartments` (`name`, `desc_1`, `desc_2`, `adults`, 
-                    `children`, `p_1`, `p_2`, `p_3`, `p_4`,
-                    `s_1_start`, `s_1_end`, `s_2_start`, `s_2_end`, 
-                    `s_3_start`, `s_3_end`, `s_4_start`, `s_4_end`)
-                    VALUES ('$name', '$desc_1', '$desc_2', '$adults',
-                    '$children', '$price_1', '$price_2', '$price_3', '$price_4',
-                    DATE('$s_1_start'), DATE('$s_1_end'), DATE('$s_2_start'), DATE('$s_2_end'),
-                    DATE('$s_3_start'), DATE('$s_3_end'), DATE('$s_4_start'), DATE('$s_4_end'))
-                ";
+            $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD);
 
-                $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD);
+            try {
+                $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                try {
-                    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $db->beginTransaction();
+                $db->exec($apt_query);
 
-                    $db->beginTransaction();
-                    $db->exec($apt_query);
+                $apt_toBe = $db->lastInsertId();
 
-                    $apt_toBe = $db->lastInsertId();
+                foreach ($apt_imgs as $apt_img) {
+                    $img_query = "
+                    INSERT INTO `apartment_images` (`img_name`, `apt_id`, `is_active`)
+                    VALUES ('$apt_img', '$apt_toBe', 1)
+                    ";
 
-                    foreach ($apt_imgs as $apt_img) {
-                        $img_query = "
-                        INSERT INTO `apartment_images` (`img_name`, `apt_id`, `is_active`)
-                        VALUES ('$apt_img', '$apt_toBe', 1)
-                        ";
-
-                        $db->exec($img_query);
-                    }
-
-                    $db->commit();
-
-                } catch(Exception $e) {
-                    $db->rollBack();
-                    $errors[] = "FAILED: " . $e->getMessage();
-                }
-                
-
-                if(empty($errors)){
-                    $success = "Successfully Added the apartment!";
-                    $_POST = [];
+                    $db->exec($img_query);
                 }
 
-            } else {
-                $errors[] = "Season days are not properly filled.";
+                $db->commit();
+
+            } catch(Exception $e) {
+                $db->rollBack();
+                $errors[] = "FAILED: " . $e->getMessage();
             }
+            
+
+            if(empty($errors)){
+                $success = "Successfully Added the apartment!";
+                $_POST = [];
+            }
+
+            
             
         }
 

@@ -67,7 +67,7 @@
             $errors[] = "Adults is empty!";
         }
         if(empty($children)) {
-            $errors[] = "Children is empty!";
+            $children = 0;
         }
 
         if(empty($errors)){
@@ -92,7 +92,7 @@
             $step4 = false;
 
             $apt = getApartment($select_apt, $db);
-            $price = getApartmentPrice($from, $to, $apt);
+            $price = getApartmentPrice($from, $to, $apt, $adults+$children);
 
         } else {
             $step1 = false;
@@ -116,37 +116,8 @@
         if(empty($email)) {
             $errors[] = "Email is empty!";
         }
-        if(empty($come_from)) {
-            $errors[] = "Come From is empty!";
-        }
         if(empty($payment_via)) {
             $errors[] = "Payment Via is empty!";
-        }
-        if(empty($note)) {
-            $errors[] = "Note is empty!";
-        }
-        if(empty($errors) && $payment_via == "Credit Card") {
-            $cc_name = normal($_POST['c_name']);
-            $cc_number = normal($_POST['c_number']);
-            $cc_cvv = (int)normal($_POST['c_cvv']);
-            $cc_mm = (int)normal($_POST['c_mm']);
-            $cc_yy = (int)normal($_POST['c_aa']);
-
-            if(empty($cc_name)){
-                $errors[] = "Credit Card name is empty";
-            }
-            if(empty($cc_number)){
-                $errors[] = "Credit Card number is empty";
-            }
-            if(empty($cc_cvv)){
-                $errors[] = "Credit Card CVV is empty";
-            }
-            if(empty($cc_mm)){
-                $errors[] = "Credit Card MM is empty";
-            }
-            if(empty($cc_yy)){
-                $errors[] = "Credit Card AA is empty";
-            }
         }
 
         if(empty($errors)) {
@@ -176,13 +147,6 @@
                 $db->exec($add_r_query);
                 $reserve_id = $db->lastInsertId();
 
-                if($payment_via == "Credit Card"){
-                    $add_cc_query = "INSERT INTO `cc_payments`
-                    (`cc_name`, `cc_number`,`cc_cvv`, `cc_mm`, `cc_yy`, `res_no`) VALUE
-                    ('$cc_name', '$cc_number', $cc_cvv, $cc_mm, $cc_yy, $reserve_id)";
-                    $db->exec($add_cc_query);
-                }
-
                 $db->commit();
 
             } catch(Exception $e) {
@@ -197,7 +161,7 @@
             $step4 = false;
 
             $apt = getApartment($select_apt, $db);
-            $price = getApartmentPrice($from, $to, $apt);
+            $price = getApartmentPrice($from, $to, $apt, $adults+$children);
         }
        
     }

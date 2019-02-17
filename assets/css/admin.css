@@ -1022,9 +1022,17 @@ margin: 0 0 0 15px;
 }
 
 
+.apt-prices-row {
+    display: flex;
+}
+
+
 .apt-prices {
-    width: 100%;
+    flex: 1;
     margin: 25px 0;
+}
+.apt-prices:first-child {
+    margin-right: 50px;
 }
 
 .apt-prices-boxes {
@@ -1034,13 +1042,19 @@ margin: 0 0 0 15px;
 
 .apt-prices-boxes .apt-field {
     flex: 1;
-    margin-right: 25px;
+    margin-right: 20px;
 }
 
 .apt-prices-boxes .apt-field:last-child {
     margin-right: 0;
 }
 
+#dateOne,
+#dateTwo,
+#dateThree,
+#dateFour {
+    display: none;
+}
 
 .apt-session {
     display: flex;

@@ -25,8 +25,10 @@
         if(isset($_POST['edit_apartment']) && !empty(normal($_POST['edit_apartment']))){
 
             foreach ($_POST as $p_name => $p_value) {
-                if(empty(normal($p_value)) && gettype($p_value) !== 'array'){
-                    $errors[] = apt_error($p_name, 'Empty');
+                if(!in_array($p_name, ['p_1_a', 'p_2_a', 'p_3_a', 'p_4_a'])){
+                    if(empty(normal($p_value)) && gettype($p_value) !== 'array'){
+                        $errors[] = apt_error($p_name, 'Empty');
+                    }
                 }
             }
 
@@ -42,41 +44,49 @@
                 $price_3 = normal($_POST['p_3']);
                 $price_4 = normal($_POST['p_4']);
 
-                $s_1_start = dateDB(normal($_POST['s_1_start']));
-                $s_1_end = dateDB(normal($_POST['s_1_end']));
-                $s_2_start = dateDB(normal($_POST['s_2_start']));
-                $s_2_end = dateDB(normal($_POST['s_2_end']));
-                $s_3_start = dateDB(normal($_POST['s_3_start']));
-                $s_3_end = dateDB(normal($_POST['s_3_end']));
-                $s_4_start = dateDB(normal($_POST['s_4_start']));
-                $s_4_end = dateDB(normal($_POST['s_4_end']));
+                $price_1_a = normal($_POST['p_1_a']);
+                $price_2_a = normal($_POST['p_2_a']);
+                $price_3_a = normal($_POST['p_3_a']);
+                $price_4_a = normal($_POST['p_4_a']);
+
+                $s_1_date = normal($_POST['s_1_date']);
+                $s_2_date = normal($_POST['s_2_date']);
+                $s_3_date = normal($_POST['s_3_date']);
+                $s_4_date = normal($_POST['s_4_date']);
+
+                $s_sub = explode(" to ", $s_1_date);
+                $s_1_start = dateDB(normal($s_sub[0]));
+                $s_1_end = dateDB(normal($s_sub[1]));
+
+                $s_sub = explode(" to ", $s_2_date);
+                $s_2_start = dateDB(normal($s_sub[0]));
+                $s_2_end = dateDB(normal($s_sub[1]));
+
+                $s_sub = explode(" to ", $s_3_date);
+                $s_3_start = dateDB(normal($s_sub[0]));
+                $s_3_end = dateDB(normal($s_sub[1]));
+
+                $s_sub = explode(" to ", $s_4_date);
+                $s_4_start = dateDB(normal($s_sub[0]));
+                $s_4_end = dateDB(normal($s_sub[1]));
 
 
-
-                $totalDay = dateDiffer($s_1_start, $s_1_end)+dateDiffer($s_2_start, $s_2_end)+dateDiffer($s_3_start, $s_3_end)+dateDiffer($s_4_start, $s_4_end);
+                $apt_query = "
+                UPDATE `apartments` SET `name`='$name', `desc_1`='$desc_1', `desc_2`='$desc_2', `adults`=$adults, 
+                `children`=$children, `p_1`=$price_1, `p_2`=$price_2, `p_3`=$price_3, `p_4`=$price_4, 
+                `p_1_a`=$price_1_a, `p_2_a`=$price_2_a, `p_3_a`=$price_3_a, `p_4_a`=$price_4_a,
+                `s_1_start`='$s_1_start', `s_1_end`='$s_1_end', `s_2_start`='$s_2_start', `s_2_end`='$s_2_end', 
+                `s_3_start`='$s_3_start', `s_3_end`='$s_3_end', `s_4_start`='$s_4_start', `s_4_end`='$s_4_end'
+                WHERE id=:id
+                ";
+                $stmt = $db->prepare($apt_query);
                 
-                if($totalDay === 361) {
-
-                    $apt_query = "
-                    UPDATE `apartments` SET `name`='$name', `desc_1`='$desc_1', `desc_2`='$desc_2', `adults`=$adults, 
-                    `children`=$children, `p_1`=$price_1, `p_2`=$price_2, `p_3`=$price_3, `p_4`=$price_4,
-                    `s_1_start`='$s_1_start', `s_1_end`='$s_1_end', `s_2_start`='$s_2_start', `s_2_end`='$s_2_end', 
-                    `s_3_start`='$s_3_start', `s_3_end`='$s_3_end', `s_4_start`='$s_4_start', `s_4_end`='$s_4_end'
-                    WHERE id=:id
-                    ";
-                    $stmt = $db->prepare($apt_query);
-                    
-                    if($stmt->execute(['id'=>(int)$page_id])){
-                        $success = "Successfully edited the apartment!";
-                    } else {
-                        $errors[] = "Couldn't update the apartment.";
-                    }
-
-
-
+                if($stmt->execute(['id'=>(int)$page_id])){
+                    $success = "Successfully edited the apartment!";
                 } else {
-                    $errors[] = "Season days are not properly filled.";
+                    $errors[] = "Couldn't update the apartment.";
                 }
+
 
             }
 

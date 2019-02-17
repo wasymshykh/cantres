@@ -27,6 +27,16 @@
             </div>
         </div>
     
+        <div class="config-row">
+            <div class="config-input">
+                <div class="apt-field">
+                    <label for="paymenttypes">"FORMA DE PAGO" options</label>
+                    <input type="text" name="payment_types" id="paymenttypes" value="<?=isset($_POST['payment_types'])? $_POST['payment_types']:getSetting('payment_types',$db)?>">
+                    <p style="margin:0;padding:0;"><small>write in each option with a comma (,)</small></p>
+                </div>
+            </div>
+        </div>
+    
         
         <div class="book-a-form-submit">
             <input type="submit" value="Save Settings" name="save_settings">

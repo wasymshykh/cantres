@@ -26,6 +26,12 @@ function cameFromList($db) {
     return array_map("normal",$camefroms);
 }
 
+function paymentTypeList($db) {
+    $paymentType = getSetting('payment_types',$db);
+    $paymentTypes = explode(',',$paymentType);
+    return array_map("normal",$paymentTypes);
+}
+
 function apt_error($field, $is_what) {
     
     switch ($field) {
@@ -47,22 +53,14 @@ function apt_error($field, $is_what) {
             return 'Price 3 (T.ALTA) is '.$is_what;
         case 'p_4':
             return 'Price 4 (T.PRIME) is '.$is_what;
-        case 's_1_start':
-            return 'Season one (start) is '.$is_what;
-        case 's_1_end':
-            return 'Season one (end) is '.$is_what;
-        case 's_2_start':
-            return 'Season two (start) is '.$is_what;
-        case 's_2_end':
-            return 'Season two (end) is '.$is_what;
-        case 's_3_start':
-            return 'Season three (start) is '.$is_what;
-        case 's_3_end':
-            return 'Season three (end) is '.$is_what;
-        case 's_4_start':
-            return 'Season four (start) is '.$is_what;
-        case 's_4_end':
-            return 'Season four (end) is '.$is_what;
+        case 's_1_date':
+            return 'Season one is '.$is_what;
+        case 's_2_date':
+            return 'Season two is '.$is_what;
+        case 's_3_date':
+            return 'Season three is '.$is_what;
+        case 's_4_date':
+            return 'Season four is '.$is_what;
         default:
             return 'There is error ('.$field.') ' . $is_what;
             break;
@@ -308,6 +306,14 @@ function isAvailable($from, $to, $apt_id, $db) {
            }
        }
     }
+
+
+    $stmt = $db->prepare("SELECT * FROM `apartments` WHERE `id`=$apt_id");
+    $stmt->execute();
+    $apt = $stmt->fetch();
+    if(!isApartmentOpen($from, $to, $apt)) {
+        return false;
+    }
     
     return true;
 }
@@ -320,7 +326,7 @@ function getRange($from, $to) {
     return new DatePeriod($start, $interval, $end);
 }
 
-function getApartmentPrice($from, $to, $apt) {
+function getApartmentPrice($from, $to, $apt, $persons = 2) {
     
     $given_range = getRange($from, $to);
     $season_1_range = getRange($apt['s_1_start'],$apt['s_1_end']);
@@ -354,20 +360,84 @@ function getApartmentPrice($from, $to, $apt) {
     foreach ($given_range_checks as $given_date) {
         if(in_array($given_date, $season_1_checks)){
             $totalCost += $apt['p_1'];
-        }
+            if($persons > 2) {
+                $totalCost += $apt['p_1_a'] * ($persons - 2);
+            }
+        } else
         if(in_array($given_date, $season_2_checks)){
             $totalCost += $apt['p_2'];
-        }
+            if($persons > 2) {
+                $totalCost += $apt['p_2_a'] * ($persons - 2);
+            }
+        } else
         if(in_array($given_date, $season_3_checks)){
             $totalCost += $apt['p_3'];
-        }
+            if($persons > 2) {
+                $totalCost += $apt['p_3_a'] * ($persons - 2);
+            }
+        } else
         if(in_array($given_date, $season_4_checks)){
             $totalCost += $apt['p_4'];
+            if($persons > 2) {
+                $totalCost += $apt['p_4_a'] * ($persons - 2);
+            }
         }
     }
 
     return $totalCost;
 }
+
+
+
+function isApartmentOpen($from, $to, $apt) {
+    $given_range = getRange($from, $to);
+    $season_1_range = getRange($apt['s_1_start'],$apt['s_1_end']);
+    $season_2_range = getRange($apt['s_2_start'],$apt['s_2_end']);
+    $season_3_range = getRange($apt['s_3_start'],$apt['s_3_end']);
+    $season_4_range = getRange($apt['s_4_start'],$apt['s_4_end']);
+
+    $given_range_checks = [];
+    foreach($given_range as $dt) {
+        $given_range_checks[] = $dt->format("m/d/Y");
+    }
+
+    $season_1_checks = [];
+    foreach($season_1_range as $dt) {
+        $season_1_checks[] = $dt->format("m/d/Y");
+    }
+    $season_2_checks = [];
+    foreach($season_2_range as $dt) {
+        $season_2_checks[] = $dt->format("m/d/Y");
+    }
+    $season_3_checks = [];
+    foreach($season_3_range as $dt) {
+        $season_3_checks[] = $dt->format("m/d/Y");
+    }
+    $season_4_checks = [];
+    foreach($season_4_range as $dt) {
+        $season_4_checks[] = $dt->format("m/d/Y");
+    }
+
+    foreach ($given_range_checks as $given_date) {
+        if(in_array($given_date, $season_1_checks)){
+            
+        } else
+        if(in_array($given_date, $season_2_checks)){
+            
+        } else
+        if(in_array($given_date, $season_3_checks)){
+           
+        } else
+        if(in_array($given_date, $season_4_checks)){
+            
+        } else {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
 function getApartment($apt_id, $db)
 {

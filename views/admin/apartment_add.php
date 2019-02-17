@@ -79,27 +79,53 @@ if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
     </div>
 </div>
 
-<div class="apt-prices">
-    <div class="apt-simple-title">Precio</div>
-    <div class="apt-prices-boxes">
-        <div class="apt-field">
-            <label for="tbaja">T.Baja</label>
-            <input type="text" name="p_1" id="tbaja" value="<?=isset($_POST['p_1'])? $_POST['p_1']:''?>">
-        </div>
-        <div class="apt-field">
-            <label for="tmedia">T.Media</label>
-            <input type="text" name="p_2" id="tmedia" value="<?=isset($_POST['p_2'])? $_POST['p_2']:''?>">
-        </div>
-        <div class="apt-field">
-            <label for="talta">T.Alta</label>
-            <input type="text" name="p_3" id="talta" value="<?=isset($_POST['p_3'])? $_POST['p_3']:''?>">
-        </div>
-        <div class="apt-field">
-            <label for="tprime">T.Prime</label>
-            <input type="text" name="p_4" id="tprime" value="<?=isset($_POST['p_4'])? $_POST['p_4']:''?>">
+<div class="apt-prices-row">
+    <div class="apt-prices">
+        <div class="apt-simple-title">Precio 2 Personas:</div>
+        <div class="apt-prices-boxes">
+            <div class="apt-field">
+                <label for="tbaja">T.Baja</label>
+                <input type="text" name="p_1" id="tbaja" value="<?=isset($_POST['p_1'])? $_POST['p_1']:''?>">
+            </div>
+            <div class="apt-field">
+                <label for="tmedia">T.Media</label>
+                <input type="text" name="p_2" id="tmedia" value="<?=isset($_POST['p_2'])? $_POST['p_2']:''?>">
+            </div>
+            <div class="apt-field">
+                <label for="talta">T.Alta</label>
+                <input type="text" name="p_3" id="talta" value="<?=isset($_POST['p_3'])? $_POST['p_3']:''?>">
+            </div>
+            <div class="apt-field">
+                <label for="tprime">T.Prime</label>
+                <input type="text" name="p_4" id="tprime" value="<?=isset($_POST['p_4'])? $_POST['p_4']:''?>">
+            </div>
         </div>
     </div>
+
+    <div class="apt-prices">
+        <div class="apt-simple-title">Precio Persona Adicional:</div>
+        <div class="apt-prices-boxes">
+            <div class="apt-field">
+                <label for="tbajaa">T.Baja</label>
+                <input type="text" name="p_1_a" id="tbajaa" value="<?=isset($_POST['p_1_a'])? $_POST['p_1_a']:''?>">
+            </div>
+            <div class="apt-field">
+                <label for="tmediaa">T.Media</label>
+                <input type="text" name="p_2_a" id="tmediaa" value="<?=isset($_POST['p_2_a'])? $_POST['p_2_a']:''?>">
+            </div>
+            <div class="apt-field">
+                <label for="taltaa">T.Alta</label>
+                <input type="text" name="p_3_a" id="taltaa" value="<?=isset($_POST['p_3_a'])? $_POST['p_3_a']:''?>">
+            </div>
+            <div class="apt-field">
+                <label for="tprimea">T.Prime</label>
+                <input type="text" name="p_4_a" id="tprimea" value="<?=isset($_POST['p_4_a'])? $_POST['p_4_a']:''?>">
+            </div>
+        </div>
+    </div>
+
 </div>
+
 
 <div class="apt-session">
     <div class="apt-session-l">
@@ -107,46 +133,30 @@ if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
         <div class="apt-session-setter">
             <div class="apt-simple-title">Calendario de precios</div>
             <div class="apt-session-date-select apt-session-tbaja isActive">
-                <div class="book-field dateField">
-                    <label for="s_1_from">T.B Start</label>
-                    <input type="text" id="s_1_from" name="s_1_start" value="<?=isset($_POST['s_1_start'])? $_POST['s_1_start']:''?>">
-                </div>
-                <div class="book-field dateField">
-                    <label for="s_1_to">T.B End</label>
-                    <input type="text" id="s_1_to" name="s_1_end" value="<?=isset($_POST['s_1_end'])? $_POST['s_1_end']:''?>">
+                <div class="apt-session-selector">
+                    <input type="text" id="dateOne" name="s_1_date" value="<?=isset($_POST['s_1_date'])?$_POST['s_1_date']:'';?>">
+                    <div id="dateOne-container" style="width:100%;"></div>
                 </div>
             </div>
 
-            <div class="apt-session-date-select apt-session-tmedia">
-                <div class="book-field dateField">
-                    <label for="s_2_from">T.M Start</label>
-                    <input type="text" id="s_2_from" name="s_2_start" value="<?=isset($_POST['s_2_start'])? $_POST['s_2_start']:''?>">
-                </div>
-                <div class="book-field dateField">
-                    <label for="s_2_to">T.M End</label>
-                    <input type="text" id="s_2_to" name="s_2_end" value="<?=isset($_POST['s_2_end'])? $_POST['s_2_end']:''?>">
+            <div class="apt-session-date-select apt-session-tmedia isActive">
+                <div class="apt-session-selector">
+                    <input type="text" id="dateTwo" name="s_2_date" value="<?=isset($_POST['s_2_date'])?$_POST['s_2_date']:'';?>">
+                    <div id="dateTwo-container" style="width:100%;"></div>
                 </div>
             </div>
 
-            <div class="apt-session-date-select apt-session-talta">
-                <div class="book-field dateField">
-                    <label for="s_3_from">T.M Start</label>
-                    <input type="text" id="s_3_from" name="s_3_start" value="<?=isset($_POST['s_3_start'])? $_POST['s_3_start']:''?>">
-                </div>
-                <div class="book-field dateField">
-                    <label for="s_3_to">T.M End</label>
-                    <input type="text" id="s_3_to" name="s_3_end" value="<?=isset($_POST['s_3_end'])? $_POST['s_3_end']:''?>">
+            <div class="apt-session-date-select apt-session-talta isActive">
+                <div class="apt-session-selector">
+                    <input type="text" id="dateThree" name="s_3_date" value="<?=isset($_POST['s_3_date'])?$_POST['s_3_date']:'';?>">
+                    <div id="dateThree-container" style="width:100%;"></div>
                 </div>
             </div>
 
-            <div class="apt-session-date-select apt-session-tprime">
-                <div class="book-field dateField">
-                    <label for="s_4_from">T.P Start</label>
-                    <input type="text" id="s_4_from" name="s_4_start" value="<?=isset($_POST['s_4_start'])? $_POST['s_4_start']:''?>">
-                </div>
-                <div class="book-field dateField">
-                    <label for="s_4_to">T.P End</label>
-                    <input type="text" id="s_4_to" name="s_4_end" value="<?=isset($_POST['s_4_end'])? $_POST['s_4_end']:''?>">
+            <div class="apt-session-date-select apt-session-tprime isActive">
+                <div class="apt-session-selector">
+                    <input type="text" id="dateFour" name="s_4_date" value="<?=isset($_POST['s_4_date'])?$_POST['s_4_date']:'';?>">
+                    <div id="dateFour-container" style="width:100%;"></div>
                 </div>
             </div>
         </div>
@@ -180,6 +190,20 @@ if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
     <input type="submit" value="ANADIR Apartamento" name="add_apartment">
 </div>
 
+
+
+
+
+<link rel="stylesheet" href="<?=URL?>/assets/css/daterangepicker.css">
+<script src="<?=URL?>/assets/js/moment.js"></script>
+<script src="<?=URL?>/assets/js/jquery.daterangepicker.min.js"></script>
+<script>
+    $('#dateOne').dateRangePicker({inline:true,container: '#dateOne-container',alwaysOpen:true,format: 'MM/DD/YYYY'});
+    $('#dateTwo').dateRangePicker({inline:true,container: '#dateTwo-container',alwaysOpen:true,format: 'MM/DD/YYYY'});
+    $('#dateThree').dateRangePicker({inline:true,container: '#dateThree-container',alwaysOpen:true,format: 'MM/DD/YYYY'});
+    $('#dateFour').dateRangePicker({inline:true,container: '#dateFour-container',alwaysOpen:true,format: 'MM/DD/YYYY'});
+</script>
+
 <?php
 
     if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
@@ -211,6 +235,20 @@ if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
     let tprimeSelect = document.querySelector('.apt-session-tprime');
     let tprimeBtn = document.querySelector('.apt-btn-tprime');
 
+
+    loadClearSeason();
+    function loadClearSeason() {
+        seasonSelect.forEach(s=>{
+            if(s.classList.contains('isActive') && !s.classList.contains('apt-session-tbaja')){
+                s.classList.remove('isActive')
+            }
+        })
+        seasonBtn.forEach(s=>{
+            if(s.classList.contains('isActive') && !s.classList.contains('apt-btn-tbaja')){
+                s.classList.remove('isActive')
+            }
+        })
+    }
 
     function clearSeason() {
         seasonSelect.forEach(s=>{
@@ -251,79 +289,3 @@ if(isset($_POST['apt_images']) && !empty($_POST['apt_images'])){
 
 </script>
 
-
-
-
-
-
-<script>
-$(function () {
-    var dateFormat = "mm/dd/yy",
-        from_1 = $("#s_1_from").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            to_1.datepicker("option", "minDate", getDate(this));
-        }),
-        to_1 = $("#s_1_to").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            from_1.datepicker("option", "maxDate", getDate(this));
-        }),
-        from_2 = $("#s_2_from").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            to_2.datepicker("option", "minDate", getDate(this));
-        }),
-        to_2 = $("#s_2_to").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            from_2.datepicker("option", "maxDate", getDate(this));
-        }),
-        from_3 = $("#s_3_from").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            to_3.datepicker("option", "minDate", getDate(this));
-        }),
-        to_3 = $("#s_3_to").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            from_3.datepicker("option", "maxDate", getDate(this));
-        }),
-        from_4 = $("#s_4_from").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            to_4.datepicker("option", "minDate", getDate(this));
-        }),
-        to_4 = $("#s_4_to").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 1
-        }).on("change", function () {
-            from_4.datepicker("option", "maxDate", getDate(this));
-        });
-
-    function getDate(element) {
-        var date;
-        try {
-            date = $.datepicker.parseDate(dateFormat, element.value);
-        } catch (error) {
-            date = null;
-        }
-        return date;
-    }
-});
-</script>

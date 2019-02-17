@@ -99,7 +99,7 @@ búsqueda para ver si podemos ayudarle. Gracias</p>
                     <p><?=$apt['desc_2']?></p>
                 </div>
                 <div class="apartment-price">
-                    <h2>Precio: <?=getApartmentPrice($from, $to, $apt)?> Euros <span>parcio para <?=dateDiffer($from, $to)?> noches</span></h2>
+                    <h2>Precio: <?=getApartmentPrice($from, $to, $apt, $adults+$children)?> Euros <span>parcio para <?=dateDiffer($from, $to)+1?> noches</span></h2>
                     <p>Cancelación gratuita un mes antes de la reserva</p>
                 </div>
                 <div class="apartment-reserve">

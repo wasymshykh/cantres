@@ -26,11 +26,11 @@
     <div class="resv-step-form">
         <div class="book-a-form-fields">
             <div class="book-field dateField">
-                <input type="text" id="from" placeholder="Entrada" name="from" value="<?=isset($_POST['from'])?$_POST['from']:''?>">
+                <input type="text" id="from" placeholder="Entrada" name="from" value="<?=isset($_POST['from'])?dateUser($_POST['from']):''?>">
             </div>
 
             <div class="book-field dateField">
-                <input type="text" id="to" placeholder="Salida" name="to" value="<?=isset($_POST['to'])?$_POST['to']:''?>">
+                <input type="text" id="to" placeholder="Salida" name="to" value="<?=isset($_POST['to'])?dateUser($_POST['to']):''?>">
             </div>
 
             <div class="book-field selectField">
@@ -72,7 +72,7 @@
                 <label for="apartment_<?=$apt['id']?>">
                     <div class="resv-s-p-box">
                         <div class="resv-s-p-box-name"><?=$apt['name']?></div>
-                        <div class="resv-s-p-box-price"><?=getApartmentPrice($from, $to, $apt)?> Euros</div>
+                        <div class="resv-s-p-box-price"><?=getApartmentPrice($from, $to, $apt, $adults+$children)?> Euros</div>
                     </div>
                 </label>
             </div>
@@ -129,9 +129,6 @@
                     <input type="email" name="email" placeholder="Email" value="<?=isset($_POST['email'])?$_POST['email']:''?>">
                 </div>
 
-                <!-- <div class="book-field">
-                    <input type="text" name="come_from" placeholder="COMO NOS CONOCIO" value="<?=isset($_POST['come_from'])?$_POST['come_from']:''?>">
-                </div> -->
                 <div class="book-field">
                     <select name="come_from">
                         <option value="">COMO NOS CONOCIO</option>
@@ -142,48 +139,18 @@
                     </select>
                 </div>
 
-                <!-- <div class="book-field">
-                    <input type="text" name="payment_via" placeholder="FORMA DE PAGO" value="<?=isset($_POST['payment_via'])?$_POST['payment_via']:''?>">
-                </div> -->
                 <div class="book-field">
                     <select name="payment_via" id="payvia">
                         <option value="">FORMA DE PAGO</option>
-                        <option value="Paypal">Paypal</option>
-                        <option value="Credit Card">Pago con tarjeta</option>
+                        <?php $pays = paymentTypeList($db); 
+                            foreach ($pays as $pay): ?>
+                            <option value="<?=$pay?>"><?=$pay?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
 
                 <div class="book-field">
                     <input type="text" name="note" placeholder="Notas" value="<?=isset($_POST['note'])?$_POST['note']:''?>">
-                </div>
-            </div>
-            <div class="payment-cc hidden">
-                <div class="c-2-fields">
-                    <div class="search-field">
-                        <div class="book-field">
-                            <input type="text" name="c_name" id="cname" value="" placeholder="NOMBRE DE LA TARJETA">
-                        </div>
-                    </div>
-                    <div class="search-field">
-                        <div class="book-field">
-                            <input type="text" name="c_number" id="cnumber" maxlength="19" value="" placeholder="NUMERO DE TARJETA">
-                        </div>
-                    </div>
-                </div>
-                <div class="c-3-fields">
-                    <div class="search-field">
-                        <div class="book-field">
-                            <input type="text" name="c_mm" id="cmm" placeholder="MM" maxlength="2" value="">
-                        </div>
-                        <div class="book-field">
-                            <input type="text" name="c_aa" id="caa" placeholder="AA" maxlength="2" value="">
-                        </div>
-                    </div>
-                    <div class="search-field">
-                        <div class="book-field">
-                            <input type="text" name="c_cvv" id="cvv" maxlength="3" value="" placeholder="CVV">
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -237,18 +204,6 @@
 
     
 <script>
-
-    if(document.querySelector("#payvia") != null){
-
-        document.querySelector("#payvia").addEventListener('change',(e)=>{
-            if(e.target.value === 'Credit Card') {
-                document.querySelector('.payment-cc').style.display = 'flex';
-            } else {
-                document.querySelector('.payment-cc').style.display = 'none';
-            }
-        })
-    }
-
 
 $(function () {
     var dateFormat = "mm/dd/yy",

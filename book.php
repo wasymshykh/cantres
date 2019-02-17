@@ -50,7 +50,7 @@
         $apt_id = normal($_POST['apt_id']);
 
         $apt = getApartment($apt_id, $db);
-        $cost = getApartmentPrice($from, $to, $apt);
+        $cost = getApartmentPrice($from, $to, $apt,$adults+$children);
         $tax = $cost * 0.1;
         $totalCost = $cost + $tax;
         
@@ -125,7 +125,7 @@
 
 
         $apt = getApartment($apt_id, $db);
-        $cost = getApartmentPrice($from, $to, $apt);
+        $cost = getApartmentPrice($from, $to, $apt,$adults+$children);
         $tax = $cost * 0.1;
         $totalCost = $cost + $tax;
 
