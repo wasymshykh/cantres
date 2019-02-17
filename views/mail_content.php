@@ -1,15 +1,13 @@
 <?php 
 
-$to = $email;
-
 $subject = "CanTres - Confirmation Email";
 
 $from_name = "CanTres";
-$from = "info@cantres.com";
+$from_email = "info@cantres.com";
 $headers[] = 'MIME-Version: 1.0';
 $headers[] = 'Content-type: text/html; charset=utf-8';
-$headers[] = "To: $$person_name <$to>";
-$headers[] = "From: $from_name <$from>";
+$headers[] = "To: $$person_name <$email>";
+$headers[] = "From: $from_name <$from_email>";
 
 $message = "<!DOCTYPE html>
 <html>
@@ -30,20 +28,20 @@ $message = "<!DOCTYPE html>
 
         <div style=\"width: 94%;margin: 15px auto 0 auto;background-color: #fff;padding:15px 0;\">
             <p style=\"font-size:14px;padding: 0 15px; text-align:center;\">Muchas Gracias $person_name por tu reserva en Can Tres Formentera. Tu numero de reserva es :
-                    <span>$reserve_id</span> . A continuación le hacemos un
+                    <span>$reserve_id</span> . A continuacion le hacemos un
                     resumen de su reserva:</p>
             <h1 style=\"font-size:20px;font-family:'Oswald', sans-serif;font-weight:700;letter-spacing: 1px;color: black;text-align:center;text-transform:uppercase;\">Confirmacion de reserva</h1>
 
-            <div style=\"width: 100%;max-width:500px;margin: 10px auto;display:table;\">
+            <div style=\"width: 100%;max-width:500px;margin: 20px auto;display:table;\">
                 <div style=\"width: 48%;float: left; display: block; border-right: 1px solid #e0e0e0;\">
-                    <p style=\"font-size: 14px;font-weight:700;color: #777;text-align:center;\">Llegada:</p>
-                    <h1 style=\"font-size:20px;font-family:'Oswald', sans-serif;font-weight:700;letter-spacing: 1px;color: black;text-align:center;\">
+                    <p style=\"margin: 5px 0;font-size: 14px;font-weight:700;color: #777;text-align:center;\">Llegada:</p>
+                    <h1 style=\"margin: 10px 0 15px 0;font-size:20px;font-family:'Oswald', sans-serif;font-weight:700;letter-spacing: 1px;color: black;text-align:center;\">
                         ".dateForm($from, 'd')." de ".dateForm($from, 'F')."
                     </h1>
                 </div>
                 <div style=\"width: 48%;float: right; display: block;\">
-                    <p style=\"font-size: 14px;font-weight:700;color: #777;text-align:center;\">Salida:</p>
-                    <h1 style=\"font-size:20px;font-family:'Oswald', sans-serif;font-weight:700;letter-spacing: 1px;color: black;text-align:center;\">
+                    <p style=\"margin: 5px 0;font-size: 14px;font-weight:700;color: #777;text-align:center;\">Salida:</p>
+                    <h1 style=\"margin: 10px 0 15px 0;font-size:20px;font-family:'Oswald', sans-serif;font-weight:700;letter-spacing: 1px;color: black;text-align:center;\">
                         ".dateForm($to, 'd')." de ".dateForm($to, 'F')."
                     </h1>
                 </div>
@@ -58,7 +56,7 @@ $message = "<!DOCTYPE html>
                         </h1>
                     </div>
                     <div style=\"display: table; width: 100%;\">
-                        <p style=\"margin: 0; font-size: 12px;font-weight:700;color: #777;text-align:center;display:inline-block\">Nº de Personas:</p>
+                        <p style=\"margin: 0; font-size: 12px;font-weight:700;color: #777;text-align:center;display:inline-block\">No de Personas:</p>
                         <h1 style=\"margin: 0 5px;font-size:18px;font-family:'Oswald', sans-serif;font-weight:700;letter-spacing: 2px;color:black;text-align:center;display:inline-block;text-transform:uppercase;\">
                             $adults
                         </h1>
@@ -118,33 +116,33 @@ $message = "<!DOCTYPE html>
                 <p style=\"font-size: 12px;font-weight:700;color:black;margin:0;line-height:15px;\">Cancelaciones de reservas</p>
                 <ul style=\"margin:0;padding: 0 15px 5px 15px;\">
                     <li style=\"font-size: 12px;font-weight:400;font-style:italic;color:black;margin:0;line-height:15px;\">
-                        Cancelaciones realizadas al menos 30 días antes de la fecha del inicio de la
-                        estancia: se les reembolsará el importe íntegro de la reserva.
+                        Cancelaciones realizadas al menos 30 dias antes de la fecha del inicio de la
+                        estancia: se les reembolsara el importe integro de la reserva.
                     </li>
                     <li style=\"font-size: 12px;font-weight:400;font-style:italic;color:black;margin:0;line-height:15px;\">
-                        Cancelaciones realizadas al menos 30 días antes de la fecha del inicio de la
-                        estancia: se les reembolsará el importe íntegro de la reserva.
+                        Cancelaciones realizadas al menos 30 dias antes de la fecha del inicio de la
+                        estancia: se les reembolsara el importe integro de la reserva.
                     </li>
                     <li style=\"font-size: 12px;font-weight:400;font-style:italic;color:black;margin:0;line-height:15px;\">
-                        Cancelaciones realizadas al menos 30 días antes de la fecha del inicio de la
-                        estancia: se les reembolsará el importe íntegro de la reserva.
+                        Cancelaciones realizadas al menos 30 dias antes de la fecha del inicio de la
+                        estancia: se les reembolsara el importe integro de la reserva.
                     </li>
                 </ul>
-                <p style=\"font-size: 12px;font-weight:700;color:black;margin:0;line-height:15px;\">Otra información de interés</p>
+                <p style=\"font-size: 12px;font-weight:700;color:black;margin:0;line-height:15px;\">Otra informacion de interes</p>
                 
                 <p style=\"font-size: 12px;font-weight:400;font-style:italic;color:black;margin:0;line-height:15px;\">
-                El precio no incluye la tasa turística que deberá ser abonada a la llegada al
+                El precio no incluye la tasa turistica que debera ser abonada a la llegada al
                 establecimiento (2,20 euros persona/noche).
-                A fin de tener todo a punto durante tu estancia, infórmanos de la hora estimada de
+                A fin de tener todo a punto durante tu estancia, informanos de la hora estimada de
                 llegada.<br>
 
                 Hora de check in: 15.00/ Hora check out: 12.00<br>
 
-                Al realizar el registro de entrada, los huéspedes deberán mostrar un documento de
-                identidad válido (DNI/Pasaporte) y una tarjeta de crédito.<br>
-                Asimismo, será necesario abonar un depósito de 150 euros para cubrir eventuales
+                Al realizar el registro de entrada, los huespedes deberan mostrar un documento de
+                identidad valido (DNI/Pasaporte) y una tarjeta de credito.<br>
+                Asimismo, sera necesario abonar un deposito de 150 euros para cubrir eventuales
                 desperfectos producidos en los apartamentos.<br>
-                El depósito será devuelto íntegramente en la fecha de salida una vez revisado el
+                El deposito sera devuelto integramente en la fecha de salida una vez revisado el
                 apartamento.
                 </p>
             </div>
@@ -171,7 +169,7 @@ $message = "<!DOCTYPE html>
                         1,2 km - Sant Francesc<br>
                         9 km - Puerto de la Savina
                     </p>
-                    <p style=\"font-family:serif;font-size:14px;font-weight:400;color:black;margin: 15px 0;line-height:18px;\">Ver Ubicación</p>
+                    <p style=\"font-family:serif;font-size:14px;font-weight:400;color:black;margin: 15px 0;line-height:18px;\">Ver Ubicacion</p>
                 </div>
                 <div style=\"width: 45%; float: left;\">
                     <img src=\"".URL."/assets/img/map_img.png\" style=\"width:100%;height: auto;display:block;\">
@@ -192,10 +190,10 @@ $message = "<!DOCTYPE html>
                     </h3>
                     <p style=\"font-family:serif;font-size:12px;font-weight:400;color:black;margin: 5px 0;line-height:14px;text-align:center;\">
                         El traslado desde Ibiza siempre es en Ferry
-                            Tienes muchas compañías. Si haces click
+                            Tienes muchas companias. Si haces click
                             en este enlace puedes comprar los billetes con
                             un 15% de descuento al introducir
-                            el código : CANTRES
+                            el codigo : CANTRES
                     </p>
                 </div>
                 <div style=\"width: 29%; margin: 0 2%; box-sizing: border-box;float:left;\">
@@ -218,7 +216,7 @@ $message = "<!DOCTYPE html>
                         en Can Tres o bien recogerla en el puerto
                         de la Savina. Si haces click en este enlace
                         puedes hacer tu reserva con un 10% de descuento
-                        con el código CAN TRES
+                        con el codigo CAN TRES
                     </p>
                 </div>
                 <div style=\"width: 29%; margin: 0 2%; box-sizing: border-box;float:left;\">
@@ -229,7 +227,7 @@ $message = "<!DOCTYPE html>
                     <p style=\"font-family:serif;font-size:12px;font-weight:400;color:black;margin: 5px 0;line-height:14px;text-align:center;\">
                         Formentera es una isla con muy pocos taxis
                         sin embargo puedes pedir un taxi llamando
-                        al teléfono : +34 971 322 342
+                        al telefono : +34 971 322 342
                     </p>
                 </div>
             </div>
@@ -241,11 +239,11 @@ $message = "<!DOCTYPE html>
                         Restaurantes
                     </h3>
                     <p style=\"font-family:serif;font-size:12px;font-weight:400;color:black;margin: 5px 0;line-height:14px;text-align:center;\">
-                        A través de nuestra guía en la web
+                        A traves de nuestra guia en la web
                         aparecen todas nuestras recomendaciones sobre
                         los diferentes restaurantes al rededor
                         de la isla.<br>
-                        Click aquí para ver nuestra guia
+                        Click aqui para ver nuestra guia
                     </p>
                 </div>
                 <div style=\"width: 29%; margin: 0 2%; box-sizing: border-box;float:left;\">
@@ -260,7 +258,7 @@ $message = "<!DOCTYPE html>
                         llamando al telefono : +34617586141
                         o bien enviando un email
                         ibizacantierirent@gmail.com
-                        Con el código Can Tres tiene un 10%
+                        Con el codigo Can Tres tiene un 10%
                         de descuento.
                     </p>
                 </div>
@@ -270,11 +268,11 @@ $message = "<!DOCTYPE html>
                         Playas
                     </h3>
                     <p style=\"font-family:serif;font-size:12px;font-weight:400;color:black;margin: 5px 0;line-height:14px;text-align:center;\">
-                        A través de nuestra guía en la web
+                        A traves de nuestra guia en la web
                         aparecen todas nuestras recomendaciones sobre
                         los diferentes playas al rededor
                         de la isla.<br>
-                        Click aquí para ver nuestra guia
+                        Click aqui para ver nuestra guia
                     </p>
                 </div>
             </div>
@@ -285,7 +283,7 @@ $message = "<!DOCTYPE html>
 </body>
 </html>";
 
-if (!mail($to, $subject, $message, implode("\r\n", $headers))) {
+if (!mail($email, $subject, $message, implode("\r\n", $headers))) {
     $errors[] = "Email Couldn't be sent!";
 }
 ?>

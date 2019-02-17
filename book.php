@@ -27,9 +27,6 @@
         if(empty($adults)){
             $errors[] = "Personas field is empty!";
         }
-        if(empty($children) && $children != '0'){
-            $errors[] = "Ninos field is empty!";
-        }
         if(isset($_POST['email']) && empty($email)){
             $errors[] = "Email field is empty!";
         }
