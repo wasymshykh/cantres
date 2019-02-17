@@ -5,14 +5,14 @@
             <div class="search-field">
                 <label for="from">Entrada</label>
                 <div class="book-field dateField">
-                    <input type="text" name="from" id="from">
+                    <input type="text" name="from" id="from" value="<?=isset($from)?$from:''?>">
                 </div>
             </div>
 
             <div class="search-field">
                 <label for="to">Salida</label>
                 <div class="book-field dateField">
-                    <input type="text" name="to" id="to">
+                    <input type="text" name="to" id="to" value="<?=isset($to)?$to:''?>">
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
                 <div class="book-field selectField">
                     <select id="adults" name="adults">
                         <?php for($i = 0; $i <= 8; $i++): ?>
-                            <option value="<?=$i?>"><?=$i?></option>
+                            <option value="<?=$i?>" <?=(isset($adults) && $adults == $i)?'selected':''?>><?=$i?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
@@ -32,7 +32,7 @@
                 <div class="book-field selectField">
                     <select id="ninos" name="children">
                         <?php for($i = 0; $i <= 8; $i++): ?>
-                            <option value="<?=$i?>"><?=$i?></option>
+                            <option value="<?=$i?>" <?=(isset($children) && $children == $i)?'selected':''?>><?=$i?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
@@ -49,6 +49,16 @@
 
 
 <div class="main-reserve">
+
+    <?php if(count($apt_available) < 1): ?>
+
+        <div class="main-top">
+            <p>Lo sentimos, no hay apartamentos disponibles para las fechas escogidas con su criterio de
+búsqueda. No obstante, envíenos un email a <a href="mailto:info@cantresformentera.com"><u>info@cantresformentera.com</u></a> con los datos de su
+búsqueda para ver si podemos ayudarle. Gracias</p>
+        </div>
+
+    <?php else: ?>
 
     <div class="main-top">
         <p>Apartmentos disponsibles desde el 
@@ -108,6 +118,8 @@
     <div class="apartment-bottom">
         <h1><a href="">Nueva Busqueda</a></h1>
     </div>
+
+    <?php endif;?>
 
 </div>
 

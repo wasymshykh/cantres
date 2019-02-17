@@ -33,10 +33,7 @@
         if(isset($_POST['email']) && empty($email)){
             $errors[] = "Email field is empty!";
         }
-        if(isset($_POST['come_from']) && empty($come_from)){
-            $errors[] = "Como Nos Conocio field is empty!";
-        }
-        if(!dateValid($from, $to)) {
+        if(!dateValid($from, $to)){
             $errors[] = "Invalid date selected!";
         }
 
@@ -128,9 +125,6 @@
         if(empty($region)){
             $errors[] = "Pais field is empty";
         }
-        if(empty($note)){
-            $errors[] = "Nota field is empty";
-        }
 
 
         $apt = getApartment($apt_id, $db);
@@ -186,12 +180,11 @@
 
             if(empty($errors)){
 
-               
-                    $apt_img = getApartmentImages($apt['id'], $db)[0];
+                $apt_img = getApartmentImages($apt['id'], $db)[0];
                     
                 $specialDiv = '<div class="beforeMain" style="background: url('.URL.'/assets/uploads/'.$apt_img['img_name'].') no-repeat;
-    background-size: cover;
-    background-position: center center;"></div>';
+                    background-size: cover;
+                    background-position: center center;"></div>';
                 $specialClass = "main-grey";
                 $page_view = "done.php";
 
