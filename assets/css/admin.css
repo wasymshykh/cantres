@@ -421,7 +421,7 @@ margin: 0 0 0 15px;
 .resv-table .dataTables_wrapper .dataTables_paginate {
     padding-top: 2em;
 }
-.resv-table table td:last-child {
+/* .resv-table table td:last-child {
     width: 0;
 }
 
@@ -447,15 +447,22 @@ margin: 0 0 0 15px;
     pointer-events: all;
     z-index: 1;
     padding: 10px 0;
-}
+} */
 
 .shouldOpen {
     position: relative;
 }
 
 .openit {
-    width: 90%;
-    margin: 0 auto;
+    position: absolute;
+    width: 100%;
+    display: none;
+    background-color: #ffffff;
+    padding: 15px;
+    box-shadow: 4px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.openit.active {
     display: flex;
     flex-direction: column;
 }

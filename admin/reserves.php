@@ -2,6 +2,7 @@
     require('../config/start.php');
     require('../include/functions.php');
 
+    $errors = [];
 
     if(empty($_POST['reserve_check'])){
         $reservation_query = "
@@ -24,22 +25,38 @@
 
 
     if(!empty($_POST['reserve_filter'])){
-        if(isset($_POST['from']) && !empty($_POST['from'])){
+        if(isset($_POST['from']) && empty($_POST['from'])){
+            $error[] = "From cannot be empty!";
+        }
+        if(isset($_POST['to']) && empty($_POST['to'])){
+            $error[] = "To cannot be empty!";
+        }
+        
+        if(empty($error)){
+
             $from = dateDB(normal($_POST['from']));
-        }
-        if(isset($_POST['to']) && !empty($_POST['to'])){
             $to = dateDB(normal($_POST['to']));
+    
+            $get_reservations = getAvailableReserve($from, $to, $db);
+            for ($i = 0; $i < count($get_reservations); $i++) {
+                $reservation_query = "SELECT `name` from `apartments` where `id`=:apt_id";
+                $stmt = $db->prepare($reservation_query);
+                $stmt->execute(['apt_id' => $get_reservations[$i]['apt_id']]);
+                $apt_name = $stmt->fetch()['name'];
+                $get_reservations[$i]['name'] = $apt_name;
+    
+    
+                $reservation_query = "SELECT `name`as`fname`,`email`,`come_from` from `client` where `id`=:client_id";
+                $stmt = $db->prepare($reservation_query);
+                $stmt->execute(['client_id' => $get_reservations[$i]['apt_id']]);
+                $resu = $stmt->fetch();
+                $get_reservations[$i]['client_name'] = $resu['fname'];
+                $get_reservations[$i]['email'] = $resu['email'];
+                $get_reservations[$i]['come_from'] = $resu['come_from'];
+    
+            }
         }
 
-
-        $get_reservations = getAvailableReserve($from, $to, $db);
-        for ($i = 0; $i < count($get_reservations); $i++) {
-            $reservation_query = "SELECT `name` from `apartments` where `id`=:apt_id";
-            $stmt = $db->prepare($reservation_query);
-            $stmt->execute(['apt_id' => $get_reservations[$i]['apt_id']]);
-            $apt_name = $stmt->fetch()['name'];
-            $get_reservations[$i]['name'] = $apt_name;
-        }
         
     }
 
