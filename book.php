@@ -186,6 +186,10 @@
                     background-size: cover;
                     background-position: center center;"></div>';
                 $specialClass = "main-grey";
+
+                // IF SUCCESSFULLY BOOKED - SENDING EMAIL
+                include './views/mail_content.php';
+
                 $page_view = "done.php";
 
             } else {
