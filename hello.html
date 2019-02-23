@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello</title>
+</head>
+<body>
+    
+    <input type="hidden" id="date_1_s">
+    <input type="hidden" id="date_1_e">
+
+    <input type="hidden" id="date_2_s">
+    <input type="hidden" id="date_2_e">
+
+    <input type="hidden" id="date_3_s">
+    <input type="hidden" id="date_3_e">
+
+    <input type="hidden" id="date_4_s">
+    <input type="hidden" id="date_4_e">
+
+
+    <div id="calendar">
+        <div id="cal_year"></div>
+        <div id="cal_month">
+            <div id="cal_m_left"></div>
+            <div id="cal_m"></div>
+            <div id="cal_m_right"></div>
+        </div>
+        <div id="cal_days">
+            
+        </div>
+    </div>
+
+    <div id="seasons">
+        <div id="season-1" class="season-item active">season 1</div>
+        <div id="season-2" class="season-item">season 2</div>
+        <div id="season-3" class="season-item">season 3</div>
+        <div id="season-4" class="season-item">season 4</div>
+    </div>
+
+    <style>
+        #cal_m_left, #cal_m_right {
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            border-radius: 50%;
+        }
+
+        #cal_days {
+            width: 300px;
+            display: grid;
+            grid-template-columns: auto auto auto auto auto auto auto;
+        }
+
+        #cal_days .active-one {
+            background-color: #3282dd;
+        }
+        #cal_days .active-low {
+            background-color: #9abff0;
+        }
+
+        .season-item {
+            
+        }
+    </style>
+
+    <script>
+        
+        function elem(what) {            
+            return document.querySelector(what);
+        }
+
+        const range1 = {
+            start: null,
+            end: null,
+            next : 1,
+            clear: false
+        }
+
+        window.addEventListener('load', (e)=>{            
+            let date = new Date();            
+            elem("#cal_m").innerText = theMonthName(date.getMonth());
+            elem("#cal_days").innerText = daysInMonth(date.getMonth()+1, date.getFullYear());
+            showDays(date.getMonth()+1, date.getFullYear());
+        })
+
+        document.querySelector("#cal_days").addEventListener('click', (e)=>{
+            if(range1.clear){               
+                clearTrue();
+            }
+
+            e.target.classList.add('active-one');        
+
+            if(range1.next === 1){
+                let currentMonth = theMonthNum(elem("#cal_m").innerText);
+                let date = new Date(new Date().getFullYear(), currentMonth, Number(e.target.textContent));
+                range1.start = date;
+                range1.next = 2;
+                range1.clear = false;
+
+                elem('#date_1_s').value = range1.start.getDate()+'/'+(range1.start.getMonth()+1)+'/'+range1.start.getFullYear();
+
+                clearHighlight();
+            }
+            else
+            if(range1.next === 2) {
+                let currentMonth = theMonthNum(elem("#cal_m").innerText);
+                let date = new Date(new Date().getFullYear(), currentMonth, Number(e.target.textContent));
+                range1.end = date;
+                range1.next = 1;
+                range1.clear = true;
+
+                elem('#date_1_e').value = range1.end.getDate()+'/'+(range1.end.getMonth()+1)+'/'+range1.end.getFullYear();
+
+                rangeHighlight();
+                //console.log(inRange(4,1));
+            }            
+        });
+
+        function clearTrue() {
+            document.querySelectorAll(".active-one").forEach(ao=>{
+                ao.classList.remove('active-one');
+            })
+            elem('#date_1_e').value = "";
+            elem('#date_1_s').value = "";
+        }
+        
+        function inRange($date, $month) {
+            let toCheck = new Date(new Date().getFullYear(), $month, $date);
+            
+            if(toCheck.getTime() >= range1.start.getTime() && toCheck.getTime() <= range1.end.getTime()){
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        function rangeHighlight() {
+            let currentMonth = theMonthNum(elem("#cal_m").innerText);
+            document.querySelectorAll(".dayDate").forEach(ao=>{
+                let currentDay = ao.textContent;
+                if(inRange(Number(currentDay), currentMonth)){
+                    ao.classList.add('active-low');
+                }
+            })
+        }
+
+        function clearHighlight() {
+            document.querySelectorAll(".dayDate").forEach(ao=>{
+                ao.classList.remove('active-low');
+            })
+        }
+        
+
+        elem("#cal_m_left").addEventListener('click',(e)=>{
+            // take current written month to number
+            let currentMonth = theMonthNum(elem("#cal_m").innerText);
+            
+            // take new month (previous)
+            previousmonth = (currentMonth-1)%12;
+            let date = new Date(new Date().getFullYear(), previousmonth, 1);
+
+            // setting newly obtained month
+            elem("#cal_m").innerText = theMonthName(date.getMonth());
+            
+            showDays(date.getMonth()+1, date.getFullYear());
+
+            if(range1.clear){
+                rangeHighlight();
+            }
+        });
+
+        elem("#cal_m_right").addEventListener('click',(e)=>{
+            // take current written month to number
+            let currentMonth = theMonthNum(elem("#cal_m").innerText);
+            
+            // take new month (previous)
+            nextmonth = (currentMonth+1)%12;
+            let date = new Date(new Date().getFullYear(), nextmonth, 1);
+
+            // setting newly obtained month
+            elem("#cal_m").innerText = theMonthName(date.getMonth());
+            
+            showDays(date.getMonth()+1, date.getFullYear());
+
+            if(range1.clear){
+                rangeHighlight();
+            }
+        });
+
+        function showDays(month, year) {
+            // setting newly obtained month's days
+            elem("#cal_days").innerHTML = "";
+            for(i = 1; i <= daysInMonth(month, year); i++) {
+                let dayDiv = document.createElement('div');
+                dayDiv.classList.add('dayDate');
+                dayDiv.textContent = i;
+                document.querySelector("#cal_days").appendChild(dayDiv);
+            }
+        }
+
+        function daysInMonth (month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+
+        function theMonthNum(name){       
+            switch(name) {
+                case "January":
+                    return 0
+                    break;
+                
+                case "Feburary":
+                    return 1
+                    break;
+            
+                case "March":
+                    return 2
+                    break;
+            
+                case "April":
+                    return 3
+                    break;
+            
+                case "May":
+                    return 4
+                    break;
+            
+                case "June":
+                    return 5
+                    break;
+            
+                case "July":
+                    return 6
+                    break;
+                
+                case "August":
+                    return 7
+                    break;
+            
+                case "September":
+                    return 8
+                    break;
+            
+                case "Octuber":
+                    return 9
+                    break;
+            
+                case "November":
+                    return 10
+                    break;
+            
+                case "December":
+                    return 11
+                    break;
+            
+                default:
+                    return -1
+            }
+        }
+
+
+        function theMonthName(num){
+            switch(num) {
+                case 0:
+                    return "January"
+                    break;
+                
+                case 1:
+                    return "Feburary"
+                    break;
+            
+                case 2:
+                    return "March"
+                    break;
+            
+                case 3:
+                    return "April"
+                    break;
+            
+                case 4:
+                    return "May"
+                    break;
+            
+                case 5:
+                    return "June"
+                    break;
+            
+                case 6:
+                    return "July"
+                    break;
+                
+                case 7:
+                    return "August"
+                    break;
+            
+                case 8:
+                    return "September"
+                    break;
+            
+                case 9:
+                    return "Octuber"
+                    break;
+            
+                case 10:
+                    return "November"
+                    break;
+            
+                case 11:
+                    return "December"
+                    break;
+            
+                default:
+                    return "what?"
+            }
+        }
+    
+    </script>
+
+</body>
+</html>
