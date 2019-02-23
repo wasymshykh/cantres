@@ -4,9 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,400,700" rel="stylesheet">
+
     <title>Hello</title>
 </head>
 <body>
+
+        <style>
+        #calendar-content {
+            display: flex;
+        }
+        #cal_month {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        #calendar {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        #seasons {
+            display: flex;
+            flex-direction: column;
+        }
+        #cal_m_left, #cal_m_right {
+            width: 30px;
+            height: 30px;
+            background-color: #ebebeb;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-family: "Oswald", sans-serif;
+            color: #a8a8a8;
+            font-weight: 400;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        #cal_m_left:hover, #cal_m_right:hover {
+            background-color: #dfdbdb
+        }
+
+        #cal_m {
+            text-align: center;
+            line-height: 30px;
+            font-family: "Oswald", sans-serif;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        #cal_days {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto auto auto;
+        }
+        #cal_days .dayDate {
+            cursor: pointer;
+            margin: 0.2em;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            font-size: 12px;
+            width: 40px;
+            height: 25px;
+            line-height: 25px;
+        }
+
+        #cal_days .active-one {
+            border-color: #3282dd;
+            background-color: #3282dd;
+        }
+        #cal_days .active-one-low {
+            background-color: #9abff0;
+        }
+
+        #cal_days .active-two {
+            border-color: #29bd5a;
+            background-color: #29bd5a;
+        }
+        #cal_days .active-two-low {
+            background-color: #78ee9f;
+        }
+
+        #cal_days .active-three {
+            border-color: #8a37ce;
+            background-color: #8a37ce;
+        }
+        #cal_days .active-three-low {
+            background-color: #b97ee9;
+        }
+
+        #cal_days .active-four {
+            border-color: #a82361;
+            background-color: #a82361;
+        }
+        #cal_days .active-four-low {
+            background-color: #df659e;
+        }
+
+        .season-item {
+            font-family: "Oswald", sans-serif;
+            font-size: 12px;
+            line-height: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400;
+            width: 100px;
+            height: 16px;
+            display: block;
+            padding: 0.5em 1em;
+            margin: 1em 0;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            position: relative;
+        }
+        .season-item.active {
+            border: 2px solid #000000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+        }
+        .season-item::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        #season-1::before {
+            background-color: #3282dd;
+        }
+        #season-2::before {
+            background-color: #29bd5a;
+        }
+        #season-3::before {
+            background-color: #8a37ce;
+        }
+        #season-4::before {
+            background-color: #a82361;
+        }
+    </style>
     
     <input type="hidden" id="date_1_s">
     <input type="hidden" id="date_1_e">
@@ -20,58 +158,73 @@
     <input type="hidden" id="date_4_s">
     <input type="hidden" id="date_4_e">
 
+    <div id="calendar-content">
 
-    <div id="calendar">
-        <div id="cal_year"></div>
-        <div id="cal_month">
-            <div id="cal_m_left"></div>
-            <div id="cal_m"></div>
-            <div id="cal_m_right"></div>
+        <div id="calendar">
+            <div id="cal_year"></div>
+            <div id="cal_month">
+                <div id="cal_m_left"><</div>
+                <div id="cal_m"></div>
+                <div id="cal_m_right">></div>
+            </div>
+            <div id="cal_days"></div>
         </div>
-        <div id="cal_days">
-            
+    
+        <div id="seasons">
+            <div id="season-1" class="season-item active">season 1</div>
+            <div id="season-2" class="season-item">season 2</div>
+            <div id="season-3" class="season-item">season 3</div>
+            <div id="season-4" class="season-item">season 4</div>
         </div>
+
     </div>
-
-    <div id="seasons">
-        <div id="season-1" class="season-item active">season 1</div>
-        <div id="season-2" class="season-item">season 2</div>
-        <div id="season-3" class="season-item">season 3</div>
-        <div id="season-4" class="season-item">season 4</div>
-    </div>
-
-    <style>
-        #cal_m_left, #cal_m_right {
-            width: 30px;
-            height: 30px;
-            background-color: black;
-            border-radius: 50%;
-        }
-
-        #cal_days {
-            width: 300px;
-            display: grid;
-            grid-template-columns: auto auto auto auto auto auto auto;
-        }
-
-        #cal_days .active-one {
-            background-color: #3282dd;
-        }
-        #cal_days .active-low {
-            background-color: #9abff0;
-        }
-
-        .season-item {
-            
-        }
-    </style>
 
     <script>
+
+        // Returns current season in number
+        function currentSeason() {
+            let selectedSeason = elem(".season-item.active").textContent.toLowerCase();
+            switch (selectedSeason) {
+                case "season 1":
+                    return 1;
+                    break;
+                case "season 2":
+                    return 2;
+                    break;
+                case "season 3":
+                    return 3;
+                    break;
+                case "season 4":
+                    return 4;
+                    break;
+                default:
+                    console.error("What season??");
+                    return -1;
+                    break;
+            }
+        }
+        currentSeason();
+
+        elems(".season-item").forEach(si => {
+            si.addEventListener('click', (e)=>{
+
+                elems(".season-item").forEach(si=>{
+                    si.classList.remove('active');
+                })
+
+                si.classList.add('active');
+
+            })
+        });
         
         function elem(what) {            
             return document.querySelector(what);
         }
+        function elems(what) {            
+            return document.querySelectorAll(what);
+        }
 
+        // for seaon 1
         const range1 = {
             start: null,
             end: null,
@@ -79,7 +232,31 @@
             clear: false
         }
 
-        window.addEventListener('load', (e)=>{            
+        // for seaon 2
+        const range2 = {
+            start: null,
+            end: null,
+            next : 1,
+            clear: false
+        }
+
+        // for seaon 3
+        const range3 = {
+            start: null,
+            end: null,
+            next : 1,
+            clear: false
+        }
+
+        // for seaon 4
+        const range4 = {
+            start: null,
+            end: null,
+            next : 1,
+            clear: false
+        }
+
+        window.addEventListener('load', (e)=>{         
             let date = new Date();            
             elem("#cal_m").innerText = theMonthName(date.getMonth());
             elem("#cal_days").innerText = daysInMonth(date.getMonth()+1, date.getFullYear());
@@ -87,55 +264,158 @@
         })
 
         document.querySelector("#cal_days").addEventListener('click', (e)=>{
-            if(range1.clear){               
-                clearTrue();
+            if(!e.target.classList.contains('dayDate')){
+                return;
             }
 
-            e.target.classList.add('active-one');        
+            let currentMonth = theMonthNum(elem("#cal_m").innerText);
+            let date = new Date(new Date().getFullYear(), currentMonth, Number(e.target.textContent));
 
-            if(range1.next === 1){
-                let currentMonth = theMonthNum(elem("#cal_m").innerText);
-                let date = new Date(new Date().getFullYear(), currentMonth, Number(e.target.textContent));
-                range1.start = date;
-                range1.next = 2;
-                range1.clear = false;
-
-                elem('#date_1_s').value = range1.start.getDate()+'/'+(range1.start.getMonth()+1)+'/'+range1.start.getFullYear();
-
-                clearHighlight();
+            if(currentSeason() === 1){
+                if(range1.clear){               
+                    clearTrue();
+                }
+                e.target.classList.add('active-one');
+                if(range1.next === 1){
+                    range1.start = date;
+                    range1.next = 2;
+                    range1.clear = false;
+                    elem('#date_1_s').value = range1.start.getDate()+'/'+(range1.start.getMonth()+1)+'/'+range1.start.getFullYear();
+                    clearHighlight();
+                } else if(range1.next === 2) {
+                    range1.end = date;
+                    range1.next = 1;
+                    range1.clear = true;
+                    elem('#date_1_e').value = range1.end.getDate()+'/'+(range1.end.getMonth()+1)+'/'+range1.end.getFullYear();
+                    rangeHighlight();
+                }
             }
-            else
-            if(range1.next === 2) {
-                let currentMonth = theMonthNum(elem("#cal_m").innerText);
-                let date = new Date(new Date().getFullYear(), currentMonth, Number(e.target.textContent));
-                range1.end = date;
-                range1.next = 1;
-                range1.clear = true;
+            if(currentSeason() === 2){
+                if(range2.clear){               
+                    clearTrue();
+                }
+                e.target.classList.add('active-two');
+                if(range2.next === 1){
+                    range2.start = date;
+                    range2.next = 2;
+                    range2.clear = false;
+                    elem('#date_2_s').value = range2.start.getDate()+'/'+(range2.start.getMonth()+1)+'/'+range2.start.getFullYear();
+                    clearHighlight();
+                } else if(range2.next === 2) {
+                    range2.end = date;
+                    range2.next = 1;
+                    range2.clear = true;
+                    elem('#date_2_e').value = range2.end.getDate()+'/'+(range2.end.getMonth()+1)+'/'+range2.end.getFullYear();
+                    rangeHighlight();
+                }
+            }
+            if(currentSeason() === 3){
+                if(range3.clear){               
+                    clearTrue();
+                }
+                e.target.classList.add('active-three');
+                if(range3.next === 1){
+                    range3.start = date;
+                    range3.next = 2;
+                    range3.clear = false;
+                    elem('#date_3_s').value = range3.start.getDate()+'/'+(range3.start.getMonth()+1)+'/'+range3.start.getFullYear();
+                    clearHighlight();
+                } else if(range3.next === 2) {
+                    range3.end = date;
+                    range3.next = 1;
+                    range3.clear = true;
+                    elem('#date_3_e').value = range3.end.getDate()+'/'+(range3.end.getMonth()+1)+'/'+range3.end.getFullYear();
+                    rangeHighlight();
+                }
+            }
+            if(currentSeason() === 4){
+                if(range4.clear){               
+                    clearTrue();
+                }
+                e.target.classList.add('active-four');
+                if(range4.next === 1){
+                    range4.start = date;
+                    range4.next = 2;
+                    range4.clear = false;
+                    elem('#date_4_s').value = range4.start.getDate()+'/'+(range4.start.getMonth()+1)+'/'+range4.start.getFullYear();
+                    clearHighlight();
+                } else if(range4.next === 2) {
+                    range4.end = date;
+                    range4.next = 1;
+                    range4.clear = true;
+                    elem('#date_4_e').value = range4.end.getDate()+'/'+(range4.end.getMonth()+1)+'/'+range4.end.getFullYear();
+                    rangeHighlight();
+                }
+            }
 
-                elem('#date_1_e').value = range1.end.getDate()+'/'+(range1.end.getMonth()+1)+'/'+range1.end.getFullYear();
 
-                rangeHighlight();
-                //console.log(inRange(4,1));
-            }            
         });
 
         function clearTrue() {
-            document.querySelectorAll(".active-one").forEach(ao=>{
-                ao.classList.remove('active-one');
-            })
-            elem('#date_1_e').value = "";
-            elem('#date_1_s').value = "";
+            if(currentSeason() === 1){
+                document.querySelectorAll(".active-one").forEach(ao=>{
+                    ao.classList.remove('active-one');
+                })
+                elem('#date_1_e').value = "";
+                elem('#date_1_s').value = "";
+            }
+            if(currentSeason() === 2){
+                document.querySelectorAll(".active-two").forEach(ao=>{
+                    ao.classList.remove('active-two');
+                })
+                elem('#date_2_e').value = "";
+                elem('#date_2_s').value = "";
+            }
+            if(currentSeason() === 3){
+                document.querySelectorAll(".active-three").forEach(ao=>{
+                    ao.classList.remove('active-three');
+                })
+                elem('#date_3_e').value = "";
+                elem('#date_3_s').value = "";
+            }
+            if(currentSeason() === 4){
+                document.querySelectorAll(".active-four").forEach(ao=>{
+                    ao.classList.remove('active-four');
+                })
+                elem('#date_4_e').value = "";
+                elem('#date_4_s').value = "";
+            }
         }
         
-        function inRange($date, $month) {
-            let toCheck = new Date(new Date().getFullYear(), $month, $date);
+        function inRange(date, month) {
+            let toCheck = new Date(new Date().getFullYear(), month, date);
             
-            if(toCheck.getTime() >= range1.start.getTime() && toCheck.getTime() <= range1.end.getTime()){
-                return true;
-            } else {
-                return false;
+            if(currentSeason() === 1){
+                if(toCheck.getTime() >= range1.start.getTime() && toCheck.getTime() <= range1.end.getTime()){
+                    return true;
+                } else {
+                    return false;
+                }
             }
-
+            
+            if(currentSeason() === 2){
+                if(toCheck.getTime() >= range2.start.getTime() && toCheck.getTime() <= range2.end.getTime()){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            if(currentSeason() === 3){
+                if(toCheck.getTime() >= range3.start.getTime() && toCheck.getTime() <= range3.end.getTime()){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            if(currentSeason() === 4){
+                if(toCheck.getTime() >= range4.start.getTime() && toCheck.getTime() <= range4.end.getTime()){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
 
         function rangeHighlight() {
@@ -143,22 +423,67 @@
             document.querySelectorAll(".dayDate").forEach(ao=>{
                 let currentDay = ao.textContent;
                 if(inRange(Number(currentDay), currentMonth)){
-                    ao.classList.add('active-low');
+                    if(currentSeason() === 1){
+                        ao.classList.add('active-one-low');
+                    }
+                    if(currentSeason() === 2){
+                        ao.classList.add('active-two-low');
+                    }
+                    if(currentSeason() === 3){
+                        ao.classList.add('active-three-low');
+                    }
+                    if(currentSeason() === 4){
+                        ao.classList.add('active-four-low');
+                    }
+                }
+            })
+        }
+
+
+        function rangeHighlightAll() {
+            let currentMonth = theMonthNum(elem("#cal_m").innerText);
+            document.querySelectorAll(".dayDate").forEach(ao=>{
+                let currentDay = ao.textContent;
+
+                let toCheck = new Date(new Date().getFullYear(), currentMonth, Number(currentDay));
+                
+                if(range1.clear && toCheck.getTime() >= range1.start.getTime() && toCheck.getTime() <= range1.end.getTime()){
+                    ao.classList.add('active-one-low');
+                }
+                if(range2.clear && toCheck.getTime() >= range2.start.getTime() && toCheck.getTime() <= range2.end.getTime()){
+                    ao.classList.add('active-two-low');
+                }
+                if(range3.clear && toCheck.getTime() >= range3.start.getTime() && toCheck.getTime() <= range3.end.getTime()){
+                    ao.classList.add('active-three-low');
+                }
+                if(range4.clear && toCheck.getTime() >= range4.start.getTime() && toCheck.getTime() <= range4.end.getTime()){
+                    ao.classList.add('active-four-low');
                 }
             })
         }
 
         function clearHighlight() {
             document.querySelectorAll(".dayDate").forEach(ao=>{
-                ao.classList.remove('active-low');
+                if(currentSeason() === 1){
+                    ao.classList.remove('active-one-low');
+                }
+                if(currentSeason() === 2){
+                    ao.classList.remove('active-two-low');
+                }
+                if(currentSeason() === 3){
+                    ao.classList.remove('active-three-low');
+                }
+                if(currentSeason() === 4){
+                    ao.classList.remove('active-four-low');
+                }
             })
         }
         
 
         elem("#cal_m_left").addEventListener('click',(e)=>{
             // take current written month to number
-            let currentMonth = theMonthNum(elem("#cal_m").innerText);
-            
+            let currentMonth = theMonthNum(elem("#cal_m").innerText);            
+
             // take new month (previous)
             previousmonth = (currentMonth-1)%12;
             let date = new Date(new Date().getFullYear(), previousmonth, 1);
@@ -168,9 +493,7 @@
             
             showDays(date.getMonth()+1, date.getFullYear());
 
-            if(range1.clear){
-                rangeHighlight();
-            }
+            rangeHighlightAll();
         });
 
         elem("#cal_m_right").addEventListener('click',(e)=>{
@@ -186,9 +509,7 @@
             
             showDays(date.getMonth()+1, date.getFullYear());
 
-            if(range1.clear){
-                rangeHighlight();
-            }
+            rangeHighlightAll();
         });
 
         function showDays(month, year) {
@@ -206,53 +527,54 @@
             return new Date(year, month, 0).getDate();
         }
 
-        function theMonthNum(name){       
+        function theMonthNum(name){
+            name = name.toLowerCase();       
             switch(name) {
-                case "January":
+                case "january":
                     return 0
                     break;
                 
-                case "Feburary":
+                case "feburary":
                     return 1
                     break;
             
-                case "March":
+                case "march":
                     return 2
                     break;
             
-                case "April":
+                case "april":
                     return 3
                     break;
             
-                case "May":
+                case "may":
                     return 4
                     break;
             
-                case "June":
+                case "june":
                     return 5
                     break;
             
-                case "July":
+                case "july":
                     return 6
                     break;
                 
-                case "August":
+                case "august":
                     return 7
                     break;
             
-                case "September":
+                case "september":
                     return 8
                     break;
             
-                case "Octuber":
+                case "octuber":
                     return 9
                     break;
             
-                case "November":
+                case "november":
                     return 10
                     break;
             
-                case "December":
+                case "december":
                     return 11
                     break;
             
@@ -265,51 +587,51 @@
         function theMonthName(num){
             switch(num) {
                 case 0:
-                    return "January"
+                    return "january"
                     break;
                 
                 case 1:
-                    return "Feburary"
+                    return "feburary"
                     break;
             
                 case 2:
-                    return "March"
+                    return "march"
                     break;
             
                 case 3:
-                    return "April"
+                    return "april"
                     break;
             
                 case 4:
-                    return "May"
+                    return "may"
                     break;
             
                 case 5:
-                    return "June"
+                    return "june"
                     break;
             
                 case 6:
-                    return "July"
+                    return "july"
                     break;
                 
                 case 7:
-                    return "August"
+                    return "august"
                     break;
             
                 case 8:
-                    return "September"
+                    return "september"
                     break;
             
                 case 9:
-                    return "Octuber"
+                    return "octuber"
                     break;
             
                 case 10:
-                    return "November"
+                    return "november"
                     break;
             
                 case 11:
-                    return "December"
+                    return "december"
                     break;
             
                 default:
