@@ -13,6 +13,7 @@
         <style>
         #calendar-content {
             display: flex;
+            flex-wrap: wrap;
         }
         #cal_month {
             display: flex;
@@ -23,6 +24,22 @@
             padding: 15px;
             display: flex;
             flex-direction: column;
+        }
+        #cal_clear {
+            display: table;
+            margin: 15px auto 0 auto;
+            border: 1px solid #e0e0e0;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            color: #000000;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 8px 15px;
+
+        }
+        #cal_clear:hover {
+            border: 1px solid #000000;
         }
         #seasons {
             display: flex;
@@ -168,6 +185,8 @@
                 <div id="cal_m_right">></div>
             </div>
             <div id="cal_days"></div>
+            
+            <div id="cal_clear">Clear Range</div>
         </div>
     
         <div id="seasons">
@@ -176,6 +195,15 @@
             <div id="season-3" class="season-item">season 3</div>
             <div id="season-4" class="season-item">season 4</div>
         </div>
+
+        <div id="fields_s_1"></div>
+        <div id="fields_e_1"></div>
+        <div id="fields_s_2"></div>
+        <div id="fields_e_2"></div>
+        <div id="fields_s_3"></div>
+        <div id="fields_e_3"></div>
+        <div id="fields_s_4"></div>
+        <div id="fields_e_4"></div>
 
     </div>
 
@@ -225,36 +253,42 @@
         }
 
         // for seaon 1
-        const range1 = {
+        // const range1 = {
+        //     start: null,
+        //     end: null,
+        //     next : 1,
+        //     clear: false
+        // };
+        let range1 = [{
             start: null,
             end: null,
-            next : 1,
+            next: 1,
             clear: false
-        }
+        }];
 
         // for seaon 2
-        const range2 = {
+        let range2 = [{
             start: null,
             end: null,
             next : 1,
             clear: false
-        }
+        }]
 
         // for seaon 3
-        const range3 = {
+        let range3 = [{
             start: null,
             end: null,
             next : 1,
             clear: false
-        }
+        }]
 
         // for seaon 4
-        const range4 = {
+        let range4 = [{
             start: null,
             end: null,
             next : 1,
             clear: false
-        }
+        }]
 
         window.addEventListener('load', (e)=>{         
             let date = new Date();            
@@ -271,82 +305,221 @@
             let currentMonth = theMonthNum(elem("#cal_m").innerText);
             let date = new Date(new Date().getFullYear(), currentMonth, Number(e.target.textContent));
 
+            // On date click season 1 selected
             if(currentSeason() === 1){
-                if(range1.clear){               
-                    clearTrue();
+                if(range1[(range1.length-1)].clear){
+                    range1.push({
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    })
                 }
                 e.target.classList.add('active-one');
-                if(range1.next === 1){
-                    range1.start = date;
-                    range1.next = 2;
-                    range1.clear = false;
-                    elem('#date_1_s').value = range1.start.getDate()+'/'+(range1.start.getMonth()+1)+'/'+range1.start.getFullYear();
-                    clearHighlight();
-                } else if(range1.next === 2) {
-                    range1.end = date;
-                    range1.next = 1;
-                    range1.clear = true;
-                    elem('#date_1_e').value = range1.end.getDate()+'/'+(range1.end.getMonth()+1)+'/'+range1.end.getFullYear();
+                if(range1[(range1.length-1)].next === 1){
+
+                    range1[(range1.length-1)].start = date;
+                    range1[(range1.length-1)].next = 2;
+                    range1[(range1.length-1)].clear = false;
+
+                    // Generating start fields
+                    let divFields = document.querySelector('#fields_s_1');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range1.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_s_1[]');
+                        
+                        let dateValue = range1[(i)].start.getDate()+'/'+(range1[(i)].start.getMonth()+1)+'/'+range1[(i)].start.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
+                } else if(range1[(range1.length-1)].next === 2) {
+                    range1[(range1.length-1)].end = date;
+                    range1[(range1.length-1)].next = 1;
+                    range1[(range1.length-1)].clear = true;
+                    elem('#date_1_e').value = range1[(range1.length-1)].end.getDate()+'/'+(range1[(range1.length-1)].end.getMonth()+1)+'/'+range1[(range1.length-1)].end.getFullYear();
+
+                    // Generating end fields
+                    let divFields = document.querySelector('#fields_e_1');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range1.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_e_1[]');
+                        
+                        let dateValue = range1[(i)].end.getDate()+'/'+(range1[(i)].end.getMonth()+1)+'/'+range1[(i)].end.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
                     rangeHighlight();
                 }
             }
+
+
+            // On date click season 2 selected
             if(currentSeason() === 2){
-                if(range2.clear){               
-                    clearTrue();
+                if(range2[(range2.length-1)].clear){
+                    range2.push({
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    })
                 }
                 e.target.classList.add('active-two');
-                if(range2.next === 1){
-                    range2.start = date;
-                    range2.next = 2;
-                    range2.clear = false;
-                    elem('#date_2_s').value = range2.start.getDate()+'/'+(range2.start.getMonth()+1)+'/'+range2.start.getFullYear();
-                    clearHighlight();
-                } else if(range2.next === 2) {
-                    range2.end = date;
-                    range2.next = 1;
-                    range2.clear = true;
-                    elem('#date_2_e').value = range2.end.getDate()+'/'+(range2.end.getMonth()+1)+'/'+range2.end.getFullYear();
+                if(range2[(range2.length-1)].next === 1){
+
+                    range2[(range2.length-1)].start = date;
+                    range2[(range2.length-1)].next = 2;
+                    range2[(range2.length-1)].clear = false;
+
+                    // Generating start fields
+                    let divFields = document.querySelector('#fields_s_2');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range2.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_s_2[]');
+                        
+                        let dateValue = range2[(i)].start.getDate()+'/'+(range2[(i)].start.getMonth()+1)+'/'+range2[(i)].start.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
+                } else if(range2[(range2.length-1)].next === 2) {
+                    range2[(range2.length-1)].end = date;
+                    range2[(range2.length-1)].next = 1;
+                    range2[(range2.length-1)].clear = true;
+
+                    // Generating end fields
+                    let divFields = document.querySelector('#fields_e_2');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range2.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_e_2[]');
+                        
+                        let dateValue = range2[(i)].end.getDate()+'/'+(range2[(i)].end.getMonth()+1)+'/'+range2[(i)].end.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
                     rangeHighlight();
                 }
             }
+
+
+            // On date click season 3 selected
             if(currentSeason() === 3){
-                if(range3.clear){               
-                    clearTrue();
+                if(range3[(range3.length-1)].clear){
+                    range3.push({
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    })
                 }
                 e.target.classList.add('active-three');
-                if(range3.next === 1){
-                    range3.start = date;
-                    range3.next = 2;
-                    range3.clear = false;
-                    elem('#date_3_s').value = range3.start.getDate()+'/'+(range3.start.getMonth()+1)+'/'+range3.start.getFullYear();
-                    clearHighlight();
-                } else if(range3.next === 2) {
-                    range3.end = date;
-                    range3.next = 1;
-                    range3.clear = true;
-                    elem('#date_3_e').value = range3.end.getDate()+'/'+(range3.end.getMonth()+1)+'/'+range3.end.getFullYear();
+                if(range3[(range3.length-1)].next === 1){
+
+                    range3[(range3.length-1)].start = date;
+                    range3[(range3.length-1)].next = 2;
+                    range3[(range3.length-1)].clear = false;
+
+                    // Generating start fields
+                    let divFields = document.querySelector('#fields_s_3');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range3.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_s_3[]');
+                        
+                        let dateValue = range3[(i)].start.getDate()+'/'+(range3[(i)].start.getMonth()+1)+'/'+range3[(i)].start.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
+                } else if(range3[(range3.length-1)].next === 2) {
+                    range3[(range3.length-1)].end = date;
+                    range3[(range3.length-1)].next = 1;
+                    range3[(range3.length-1)].clear = true;
+
+                    // Generating end fields
+                    let divFields = document.querySelector('#fields_e_3');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range3.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_e_3[]');
+                        
+                        let dateValue = range3[(i)].end.getDate()+'/'+(range3[(i)].end.getMonth()+1)+'/'+range3[(i)].end.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
                     rangeHighlight();
                 }
             }
+
+
+            // On date click season 4 selected
             if(currentSeason() === 4){
-                if(range4.clear){               
-                    clearTrue();
+                if(range4[(range4.length-1)].clear){
+                    range4.push({
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    })
                 }
                 e.target.classList.add('active-four');
-                if(range4.next === 1){
-                    range4.start = date;
-                    range4.next = 2;
-                    range4.clear = false;
-                    elem('#date_4_s').value = range4.start.getDate()+'/'+(range4.start.getMonth()+1)+'/'+range4.start.getFullYear();
-                    clearHighlight();
-                } else if(range4.next === 2) {
-                    range4.end = date;
-                    range4.next = 1;
-                    range4.clear = true;
-                    elem('#date_4_e').value = range4.end.getDate()+'/'+(range4.end.getMonth()+1)+'/'+range4.end.getFullYear();
+                if(range4[(range4.length-1)].next === 1){
+
+                    range4[(range4.length-1)].start = date;
+                    range4[(range4.length-1)].next = 2;
+                    range4[(range4.length-1)].clear = false;
+
+                    // Generating start fields
+                    let divFields = document.querySelector('#fields_s_4');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range4.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_s_4[]');
+                        
+                        let dateValue = range4[(i)].start.getDate()+'/'+(range4[(i)].start.getMonth()+1)+'/'+range4[(i)].start.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
+                } else if(range4[(range4.length-1)].next === 2) {
+                    range4[(range4.length-1)].end = date;
+                    range4[(range4.length-1)].next = 1;
+                    range4[(range4.length-1)].clear = true;
+
+                    // Generating end fields
+                    let divFields = document.querySelector('#fields_e_4');
+                    divFields.innerHTML = "";
+                    for(let i = 0; i < range4.length; i++){
+                        let input_s = document.createElement('input');
+                        input_s.setAttribute('type', 'hidden');
+                        input_s.setAttribute('name', 'range_e_4[]');
+                        
+                        let dateValue = range4[(i)].end.getDate()+'/'+(range4[(i)].end.getMonth()+1)+'/'+range4[(i)].end.getFullYear();
+                        
+                        input_s.setAttribute('value', dateValue);
+                        divFields.appendChild(input_s);
+                    }
                     rangeHighlight();
                 }
             }
+
+
+
+
 
 
         });
@@ -356,8 +529,7 @@
                 document.querySelectorAll(".active-one").forEach(ao=>{
                     ao.classList.remove('active-one');
                 })
-                elem('#date_1_e').value = "";
-                elem('#date_1_s').value = "";
+                elem('#fields').innerHTML = "";
             }
             if(currentSeason() === 2){
                 document.querySelectorAll(".active-two").forEach(ao=>{
@@ -386,34 +558,34 @@
             let toCheck = new Date(new Date().getFullYear(), month, date);
             
             if(currentSeason() === 1){
-                if(toCheck.getTime() >= range1.start.getTime() && toCheck.getTime() <= range1.end.getTime()){
-                    return true;
-                } else {
-                    return false;
+                for(let i = 0; i < range1.length; i++){
+                    if(toCheck.getTime() >= range1[i].start.getTime() && toCheck.getTime() <= range1[i].end.getTime()){
+                        return true;
+                    }
                 }
             }
             
             if(currentSeason() === 2){
-                if(toCheck.getTime() >= range2.start.getTime() && toCheck.getTime() <= range2.end.getTime()){
-                    return true;
-                } else {
-                    return false;
+                for(let i = 0; i < range2.length; i++){
+                    if(toCheck.getTime() >= range2[i].start.getTime() && toCheck.getTime() <= range2[i].end.getTime()){
+                        return true;
+                    }
                 }
             }
             
             if(currentSeason() === 3){
-                if(toCheck.getTime() >= range3.start.getTime() && toCheck.getTime() <= range3.end.getTime()){
-                    return true;
-                } else {
-                    return false;
+                for(let i = 0; i < range3.length; i++){
+                    if(toCheck.getTime() >= range3[i].start.getTime() && toCheck.getTime() <= range3[i].end.getTime()){
+                        return true;
+                    }
                 }
             }
             
             if(currentSeason() === 4){
-                if(toCheck.getTime() >= range4.start.getTime() && toCheck.getTime() <= range4.end.getTime()){
-                    return true;
-                } else {
-                    return false;
+                for(let i = 0; i < range4.length; i++){
+                    if(toCheck.getTime() >= range4[i].start.getTime() && toCheck.getTime() <= range4[i].end.getTime()){
+                        return true;
+                    }
                 }
             }
         }
@@ -425,6 +597,9 @@
                 if(inRange(Number(currentDay), currentMonth)){
                     if(currentSeason() === 1){
                         ao.classList.add('active-one-low');
+                        if(ao.classList.contains('active-one')){
+                            ao.classList.remove('active-one');
+                        }
                     }
                     if(currentSeason() === 2){
                         ao.classList.add('active-two-low');
@@ -447,17 +622,31 @@
 
                 let toCheck = new Date(new Date().getFullYear(), currentMonth, Number(currentDay));
                 
-                if(range1.clear && toCheck.getTime() >= range1.start.getTime() && toCheck.getTime() <= range1.end.getTime()){
-                    ao.classList.add('active-one-low');
+                for(let i = 0; i < range1.length; i++){
+                    if(range1[i].clear && toCheck.getTime() >= range1[i].start.getTime() && toCheck.getTime() <= range1[i].end.getTime()){
+                        ao.classList.add('active-one-low');
+                        if(ao.classList.contains('active-one')){
+                            ao.classList.remove('active-one');
+                        }
+                    }
                 }
-                if(range2.clear && toCheck.getTime() >= range2.start.getTime() && toCheck.getTime() <= range2.end.getTime()){
-                    ao.classList.add('active-two-low');
+                
+                for(let i = 0; i < range2.length; i++){
+                    if(range2[i].clear && toCheck.getTime() >= range2[i].start.getTime() && toCheck.getTime() <= range2[i].end.getTime()){
+                        ao.classList.add('active-two-low');
+                    }
                 }
-                if(range3.clear && toCheck.getTime() >= range3.start.getTime() && toCheck.getTime() <= range3.end.getTime()){
-                    ao.classList.add('active-three-low');
+                
+                for(let i = 0; i < range3.length; i++){
+                    if(range3[i].clear && toCheck.getTime() >= range3[i].start.getTime() && toCheck.getTime() <= range3[i].end.getTime()){
+                        ao.classList.add('active-three-low');
+                    }
                 }
-                if(range4.clear && toCheck.getTime() >= range4.start.getTime() && toCheck.getTime() <= range4.end.getTime()){
-                    ao.classList.add('active-four-low');
+                
+                for(let i = 0; i < range4.length; i++){
+                    if(range4[i].clear && toCheck.getTime() >= range4[i].start.getTime() && toCheck.getTime() <= range4[i].end.getTime()){
+                        ao.classList.add('active-four-low');
+                    }
                 }
             })
         }
@@ -466,18 +655,54 @@
             document.querySelectorAll(".dayDate").forEach(ao=>{
                 if(currentSeason() === 1){
                     ao.classList.remove('active-one-low');
+                    elem('#fields_s_1').innerHTML = "";
+                    elem('#fields_e_1').innerHTML = "";
+                    range1 = [{
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    }]
                 }
                 if(currentSeason() === 2){
                     ao.classList.remove('active-two-low');
+                    elem('#fields_s_2').innerHTML = "";
+                    elem('#fields_e_2').innerHTML = "";
+                    range2 = [{
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    }]
                 }
                 if(currentSeason() === 3){
                     ao.classList.remove('active-three-low');
+                    elem('#fields_s_3').innerHTML = "";
+                    elem('#fields_e_3').innerHTML = "";
+                    range3 = [{
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    }]
                 }
                 if(currentSeason() === 4){
                     ao.classList.remove('active-four-low');
+                    elem('#fields_s_4').innerHTML = "";
+                    elem('#fields_e_4').innerHTML = "";
+                    range4 = [{
+                        start: null,
+                        end: null,
+                        next: 1,
+                        clear: false
+                    }]
                 }
             })
         }
+
+        elem("#cal_clear").addEventListener('click', (e)=>{
+            clearHighlight();
+        })
         
 
         elem("#cal_m_left").addEventListener('click',(e)=>{
